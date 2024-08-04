@@ -27,6 +27,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Car       Car[]
 }
 
 model Account {
@@ -82,4 +83,30 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model Car {
+  id             String           @id @default(cuid())
+  name           String
+  plate          String
+  userId         String
+  user           User             @relation(fields: [userId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  CarMaintenance CarMaintenance[]
+}
+
+enum CarMaintenanceStatus {
+  VENCIDA
+  CONFORME
+}
+
+model CarMaintenance {
+  id              String               @id @default(cuid())
+  name            String
+  lastMaintenance DateTime
+  nextMaintenance DateTime
+  status          CarMaintenanceStatus @default(CONFORME)
+  carId           String
+  car             Car                  @relation(fields: [carId], references: [id])
 }

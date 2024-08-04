@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Carmanage | Login",
-  description: "Faça seu login!",
+  title: "Carmanage | Cadastro",
+  description: "Cadastre-se na plataforma!",
 };
 
 export default async function LoginLayout({
