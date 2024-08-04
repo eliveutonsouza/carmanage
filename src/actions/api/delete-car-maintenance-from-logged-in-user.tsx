@@ -13,17 +13,7 @@ export default async function DeleteCarMaintenanceFromLoggedInUser(
       throw new Error("User not found");
     }
 
-    const car = await db.car.findUnique({ where: { id: carId } });
-
-    if (car && car.userId === user.id) {
-      // Deletar todas as manutenções associadas ao carro antes de deletar o carro
-      await db.carMaintenance.deleteMany({ where: { carId: car.id } }); // Deletar manutenções
-      await db.car.delete({ where: { id: carId } }); // Deletar o carro
-    } else {
-      throw new Error("Item not found or does not belong to the user");
-    }
-
-    console.log(user);
+    await db.car.findUnique({ where: { id: carId } });
   } catch (error) {
     console.error(error);
   }

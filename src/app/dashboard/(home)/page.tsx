@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Car, CheckCircle, Key, Wrench } from "lucide-react";
-import { AddCar } from "./_components/form-new-car";
-import { TableDois } from "./_components/table-dois";
+import { AddNewCar } from "./_components/add-new-car";
+import { TableCarMaintenance } from "./_components/table-car-maintenance";
+import { AddNewMaintenance } from "./_components/add-new-maintenance";
+import getCar from "@/actions/api/get-car";
 
 const mockCardsDashboard = [
   {
@@ -45,12 +47,17 @@ const mockCardsDashboard = [
 ];
 
 export default async function Dashboard() {
+  console.log(getCar());
+
   return (
     <>
       <main>
         <section className="border-b border-gray-200 p-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Dashboard</h2>
-          <AddCar />
+          <div className="space-x-2">
+            <AddNewMaintenance />
+            <AddNewCar />
+          </div>
         </section>
         <section className=" p-4 h-full flex flex-col gap-4">
           <div className="flex gap-4 items-center justify-center">
@@ -70,7 +77,7 @@ export default async function Dashboard() {
             ))}
           </div>
 
-          <TableDois />
+          <TableCarMaintenance />
         </section>
       </main>
     </>

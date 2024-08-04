@@ -3,7 +3,7 @@
 import db from "@/lib/db";
 import getLoggedInUser from "./get-logged-in-user";
 
-export default async function getCarMaintenanceUserLogged() {
+export default async function getCar() {
   try {
     const user = await getLoggedInUser();
 
@@ -11,24 +11,15 @@ export default async function getCarMaintenanceUserLogged() {
       throw new Error("User not found");
     }
 
-    const carsMaintenanceDb = await db.car.findMany({
+    const cars = await db.car.findMany({
       where: {
         userId: user.id,
       },
-      include: {
-        CarMaintenance: true,
-      },
     });
 
-    const carsMaintenance = carsMaintenanceDb.map((car) => {
-      const { CarMaintenance, ...carData } = car;
-      return {
-        ...carData,
-        ...CarMaintenance[0],
-      };
-    });
+    console.log(cars);
 
-    return carsMaintenance;
+    return cars;
   } catch (error) {
     console.log("Error getting car maintenance user logged", error);
     throw new Error("Error getting car maintenance user logged");

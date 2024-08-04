@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,11 +34,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { CarMaintenanceUserLoggedTypes } from "@/@types/car-maintenace-user-logged-types";
-import getCarMaintenanceUserLogged from "@/actions/api/get-car-maintenance-user-logged";
-import DeleteCarMaintenanceFromLoggedInUser from "@/actions/api/delete-car-maintenance-from-logged-in-user";
 
-export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
+import DeleteCarMaintenanceFromLoggedInUser from "@/actions/api/delete-car-maintenance-from-logged-in-user";
+import getCar from "@/actions/api/get-car";
+import { CarTypes } from "@/@types/car-maintenance-user-logged-types";
+
+export const columns: ColumnDef<CarTypes>[] = [
   {
     accessorKey: "plate",
     header: ({ column }) => {
@@ -55,46 +57,19 @@ export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
   },
 
   {
-    accessorKey: "lastMaintenance",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Ultima Manutenção
+          Nome do veiculo
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue("lastMaintenance")).toDateString()}</div>
-    ),
-  },
-
-  {
-    accessorKey: "nextMaintenance",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ultima Manutenção
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue("nextMaintenance")).toDateString()}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     id: "actions",
@@ -103,7 +78,7 @@ export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
       return <span className="flex">Ações</span>;
     },
     cell: ({ row }) => {
-      const maintenance = row.original;
+      const carRow = row.original;
 
       return (
         <DropdownMenu>
@@ -117,7 +92,7 @@ export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(maintenance.plate)}
+              onClick={() => navigator.clipboard.writeText(carRow.plate)}
             >
               Copiar placa
             </DropdownMenuItem>
@@ -128,8 +103,7 @@ export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={async () => {
-                await DeleteCarMaintenanceFromLoggedInUser(maintenance.carId);
-                setRefresh((prev: number) => prev + 1);
+                await DeleteCarMaintenanceFromLoggedInUser(carRow.id);
               }}
             >
               Deletar
@@ -141,34 +115,25 @@ export const columns: ColumnDef<CarMaintenanceUserLoggedTypes>[] = [
   },
 ];
 
-export function TableDois() {
+export function TableCarMaintenance() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [dataCarMaintenance, setDataCarMaintenance] = useState<
-    CarMaintenanceUserLoggedTypes[]
-  >([]);
-
-  // Novo estado para forçar re-renderização
-  const [refresh, setRefresh] = useState(0);
+  const [dataCar, setDataCar] = useState<CarTypes[]>([]);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getCarMaintenanceUserLogged();
-      setDataCarMaintenance(data);
+      const data = await getCar();
+      setDataCar(data);
     };
 
     getData();
-  }, [refresh]); // Adiciona o estado de refresh como dependência
+  }, []); // Adiciona o estado de refresh como dependência
 
-  const handleRefresh = () => {
-    setRefresh((prev) => prev + 1); // Atualiza o estado para forçar re-renderização
-  };
-
-  const table = useReactTable<CarMaintenanceUserLoggedTypes>({
-    data: dataCarMaintenance,
-    columns: columns as ColumnDef<CarMaintenanceUserLoggedTypes>[],
+  const table = useReactTable<CarTypes>({
+    data: dataCar,
+    columns: columns as ColumnDef<CarTypes>[],
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -196,10 +161,7 @@ export function TableDois() {
           }
           className="max-w-sm"
         />
-        <Button onClick={handleRefresh} className="ml-2">
-          Atualizar
-        </Button>{" "}
-        {/* Botão para atualizar */}
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

@@ -4,7 +4,7 @@ import { AddCarFormData } from "@/schemas/add-car-schema";
 import db from "@/lib/db";
 import getLoggedInUser from "./get-logged-in-user";
 
-export default async function postNewCarMaintenance(data: AddCarFormData) {
+export default async function postNewCar(data: AddCarFormData) {
   try {
     const user = await getLoggedInUser();
 
@@ -17,13 +17,6 @@ export default async function postNewCarMaintenance(data: AddCarFormData) {
         plate: data.plate.toUpperCase(),
         name: data.surname.charAt(0).toUpperCase() + data.surname.slice(1),
         userId: user.id,
-        CarMaintenance: {
-          create: {
-            name: data.maintenance[0].nameMaintenance,
-            lastMaintenance: data.maintenance[0].lastDateMaintenance,
-            nextMaintenance: data.maintenance[0].nextDateMaintenance,
-          },
-        },
       },
     });
   } catch (error) {

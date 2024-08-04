@@ -34,14 +34,12 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
 import { AddCarFormData, addCarSchema } from "@/schemas/add-car-schema";
-import postNewCarMaintenance from "@/actions/api/post-new-car-maintenance";
+import postNewCarMaintenance from "@/actions/api/post-new-car";
 
-export function AddCar() {
+export function AddNewMaintenance() {
   const formAddCar = useForm<AddCarFormData>({
     resolver: zodResolver(addCarSchema),
     defaultValues: {
-      plate: "",
-      surname: "",
       maintenance: [
         {
           nameMaintenance: "",
@@ -60,18 +58,21 @@ export function AddCar() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="default">
+        <Button variant="secondary">
           <Plus size={16} />
-          Adicionar Veiculo
+          Adicionar Manutenção
         </Button>
       </DrawerTrigger>
 
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>Adicione um veiculo</DrawerTitle>
-            <DrawerDescription>
-              Adicione um veiculo para realizar a gestão de suas manutenções.
+            <DrawerTitle className="text-center">
+              {" "}
+              Adicionar uma nova manutenção
+            </DrawerTitle>
+            <DrawerDescription className="text-center">
+              Adicione uma nova manutenção para o seu veículo.
             </DrawerDescription>
           </DrawerHeader>
           <div>
@@ -81,39 +82,6 @@ export function AddCar() {
                 onSubmit={formAddCar.handleSubmit(handleSubmit)}
                 className="flex flex-col gap-4"
               >
-                <FormField
-                  name="plate"
-                  control={formAddCar.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Placa do veiculo</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Ex: AAA-1234"
-                          className="uppercase"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  name="surname"
-                  control={formAddCar.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome do Veiculo</FormLabel>
-                      <FormControl>
-                        <Input type="text" placeholder="Ex: Gol" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   name={`maintenance.${0}.nameMaintenance`}
                   control={formAddCar.control}
