@@ -39,6 +39,9 @@ import DeleteCarMaintenanceFromLoggedInUser from "@/actions/api/delete-car-maint
 import getCar from "@/actions/api/get-car";
 import { CarTypes } from "@/@types/car-maintenance-user-logged-types";
 
+import {} from "@radix-ui/react-dialog";
+import Link from "next/link";
+
 export const columns: ColumnDef<CarTypes>[] = [
   {
     accessorKey: "plate",
@@ -55,7 +58,6 @@ export const columns: ColumnDef<CarTypes>[] = [
     },
     cell: ({ row }) => <div className="uppercase">{row.getValue("plate")}</div>,
   },
-
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -97,9 +99,11 @@ export const columns: ColumnDef<CarTypes>[] = [
               Copiar placa
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+
             <DropdownMenuItem className="cursor-pointer">
-              Editar
+              <Link href={`/dashboard/car/${carRow.id}`}>Editar</Link>
             </DropdownMenuItem>
+
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={async () => {

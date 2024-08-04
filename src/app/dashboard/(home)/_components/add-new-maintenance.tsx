@@ -9,6 +9,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+
 import {
   Form,
   FormControl,
@@ -33,26 +34,28 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
-import { AddCarFormData, addCarSchema } from "@/schemas/add-car-schema";
-import postNewCarMaintenance from "@/actions/api/post-new-car";
+import {
+  AddMaintenanceFormData,
+  addMaintenanceSchema,
+} from "@/schemas/add-maintenance-schema";
+import postNewMaintenance from "@/actions/api/post-new-maintenance";
 
-export function AddNewMaintenance() {
-  const formAddCar = useForm<AddCarFormData>({
-    resolver: zodResolver(addCarSchema),
+type AddNewMaintenanceProps = {
+  idCar: string;
+};
+
+export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
+  const formAddCar = useForm<AddMaintenanceFormData>({
+    resolver: zodResolver(addMaintenanceSchema),
     defaultValues: {
-      maintenance: [
-        {
-          nameMaintenance: "",
-          lastDateMaintenance: new Date(),
-          nextDateMaintenance: new Date(),
-        },
-      ],
+      nameMaintenance: "",
+      lastDateMaintenance: new Date(),
+      nextDateMaintenance: new Date(),
     },
   });
 
-  const handleSubmit = (data: AddCarFormData) => {
-    console.log("Cliente:", data);
-    postNewCarMaintenance(data);
+  const handleSubmit = (data: AddMaintenanceFormData) => {
+    postNewMaintenance(data, idCar);
   };
 
   return (
@@ -68,7 +71,6 @@ export function AddNewMaintenance() {
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              {" "}
               Adicionar uma nova manutenção
             </DrawerTitle>
             <DrawerDescription className="text-center">
@@ -83,7 +85,7 @@ export function AddNewMaintenance() {
                 className="flex flex-col gap-4"
               >
                 <FormField
-                  name={`maintenance.${0}.nameMaintenance`}
+                  name={"nameMaintenance"}
                   control={formAddCar.control}
                   render={({ field }) => (
                     <FormItem>
@@ -101,7 +103,7 @@ export function AddNewMaintenance() {
                 />
                 <div className="flex gap-4">
                   <FormField
-                    name={`maintenance.${0}.lastDateMaintenance`}
+                    name={"lastDateMaintenance"}
                     control={formAddCar.control}
                     render={({ field }) => (
                       <FormItem>
@@ -142,7 +144,7 @@ export function AddNewMaintenance() {
                   />
 
                   <FormField
-                    name={`maintenance.${0}.nextDateMaintenance`}
+                    name={"nextDateMaintenance"}
                     control={formAddCar.control}
                     render={({ field }) => (
                       <FormItem>

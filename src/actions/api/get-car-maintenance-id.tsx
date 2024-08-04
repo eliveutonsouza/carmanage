@@ -3,7 +3,7 @@
 import db from "@/lib/db";
 import getLoggedInUser from "./get-logged-in-user";
 
-export default async function getCar() {
+export default async function getCarMaintenanceId(userId: string) {
   try {
     const user = await getLoggedInUser();
 
@@ -11,9 +11,9 @@ export default async function getCar() {
       throw new Error("User not found");
     }
 
-    const cars = await db.car.findMany({
+    const cars = await db.carMaintenance.findMany({
       where: {
-        userId: user.id,
+        carId: userId,
       },
     });
 

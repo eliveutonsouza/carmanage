@@ -38,7 +38,6 @@ export function AddNewCar() {
   });
 
   const handleSubmit = (data: AddCarFormData) => {
-    console.log("Cliente:", data);
     postNewCar(data);
   };
 
