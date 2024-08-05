@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,14 +32,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
-
-import DeleteCarMaintenanceFromLoggedInUser from "@/actions/api/delete-car-maintenance-from-logged-in-user";
-import getCar from "@/actions/api/get-car";
-import { CarTypes } from "@/@types/car-maintenance-user-logged-types";
+import { useState } from "react";
 
 import {} from "@radix-ui/react-dialog";
 import Link from "next/link";
+import { CarTypes } from "@/@types/car-types";
+import DeleteACar from "@/actions/api/delete-a-car";
 
 export const columns: ColumnDef<CarTypes>[] = [
   {
@@ -107,7 +104,7 @@ export const columns: ColumnDef<CarTypes>[] = [
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={async () => {
-                await DeleteCarMaintenanceFromLoggedInUser(carRow.id);
+                await DeleteACar(carRow.id);
               }}
             >
               Deletar
@@ -119,24 +116,18 @@ export const columns: ColumnDef<CarTypes>[] = [
   },
 ];
 
-export function TableCarMaintenance() {
+type CarDataTable = {
+  data: CarTypes[];
+};
+
+export function TableCarMaintenance({ data }: CarDataTable) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [dataCar, setDataCar] = useState<CarTypes[]>([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getCar();
-      setDataCar(data);
-    };
-
-    getData();
-  }, []); // Adiciona o estado de refresh como dependência
 
   const table = useReactTable<CarTypes>({
-    data: dataCar,
+    data,
     columns: columns as ColumnDef<CarTypes>[],
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

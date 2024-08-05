@@ -7,11 +7,13 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Car, CheckCircle, Key, Wrench } from "lucide-react";
-import { AddNewCar } from "./_components/add-new-car";
+import { FormNewCar } from "./_components/form-new-car";
 import { TableCarMaintenance } from "./_components/table-car-maintenance";
-import getCar from "@/actions/api/get-car";
+import getCar from "@/actions/api/get-all-cars";
 
 export default async function Dashboard() {
+  const dataCar = await getCar();
+
   const CardsDashboard = [
     {
       id: 1,
@@ -51,7 +53,7 @@ export default async function Dashboard() {
         <section className="border-b border-gray-200 p-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Dashboard</h2>
           <div className="space-x-2">
-            <AddNewCar />
+            <FormNewCar />
           </div>
         </section>
 
@@ -73,7 +75,7 @@ export default async function Dashboard() {
             ))}
           </div>
 
-          <TableCarMaintenance />
+          <TableCarMaintenance data={dataCar} />
         </section>
       </main>
     </>
