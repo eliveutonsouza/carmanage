@@ -3,7 +3,7 @@
 import db from "@/lib/db";
 import getLoggedInUser from "./get-logged-in-user";
 
-export default async function getCarMaintenanceId(userId: string) {
+export default async function getCarMaintenance(userId: string) {
   try {
     const user = await getLoggedInUser();
 
@@ -19,7 +19,7 @@ export default async function getCarMaintenanceId(userId: string) {
 
     return cars;
   } catch (error) {
-    console.log("Error getting car maintenance user logged", error);
-    throw new Error("Error getting car maintenance user logged");
+    console.log("Error retrieving the logged-in user's car maintenance", error);
+    throw new Error("Error retrieving the logged-in user's car maintenance");
   }
 }
