@@ -38,93 +38,100 @@ import {} from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { CarTypes } from "@/@types/car-types";
 import DeleteACar from "@/actions/api/delete-a-car";
-
-export const columns: ColumnDef<CarTypes>[] = [
-  {
-    accessorKey: "plate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Placa
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="uppercase">{row.getValue("plate")}</div>,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nome do veiculo
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    header: () => {
-      return <span className="flex">Ações</span>;
-    },
-    cell: ({ row }) => {
-      const carRow = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(carRow.plate)}
-            >
-              Copiar placa
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="cursor-pointer">
-              <Link href={`/dashboard/car/${carRow.id}`}>Editar</Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={async () => {
-                await DeleteACar(carRow.id);
-              }}
-            >
-              Deletar
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+import { useRouter } from "next/navigation";
 
 type CarDataTable = {
   data: CarTypes[];
 };
 
 export function TableCarMaintenance({ data }: CarDataTable) {
+  const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const columns: ColumnDef<CarTypes>[] = [
+    {
+      accessorKey: "plate",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Placa
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="uppercase">{row.getValue("plate")}</div>
+      ),
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Nome do veiculo
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      header: () => {
+        return <span className="flex">Ações</span>;
+      },
+      cell: ({ row }) => {
+        const carRow = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Abrir menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => navigator.clipboard.writeText(carRow.plate)}
+              >
+                Copiar placa
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem className="cursor-pointer">
+                <Link href={`/dashboard/car/${carRow.id}`}>Editar</Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={async () => {
+                  await DeleteACar(carRow.id);
+                  router.refresh();
+                }}
+              >
+                Deletar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable<CarTypes>({
     data,

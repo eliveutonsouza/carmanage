@@ -1,5 +1,4 @@
 "use server";
-
 import getLoggedInUser from "./get-logged-in-user";
 import db from "@/lib/db";
 
