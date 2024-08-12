@@ -38,13 +38,18 @@ import {
   AddMaintenanceFormData,
   addMaintenanceSchema,
 } from "@/schemas/add-maintenance-schema";
-import postNewMaintenance from "@/actions/api/post-new-maintenance";
+import postNewMaintenance from "@/actions/maintenance/post-new-maintenance";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 type AddNewMaintenanceProps = {
   idCar: string;
 };
 
 export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const formAddCar = useForm<AddMaintenanceFormData>({
     resolver: zodResolver(addMaintenanceSchema),
     defaultValues: {
@@ -54,14 +59,21 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
     },
   });
 
-  const handleSubmit = (data: AddMaintenanceFormData) => {
-    postNewMaintenance(data, idCar);
-  };
+  const onSubmit = formAddCar.handleSubmit(async (data) => {
+    await postNewMaintenance(data, idCar);
+
+    toast({
+      title: "Sucesso",
+      description: "Manutenção adicionada com sucesso.",
+    });
+
+    router.refresh();
+  });
 
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="secondary">
+        <Button>
           <Plus size={16} />
           Adicionar Manutenção
         </Button>
@@ -81,7 +93,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
             <Form {...formAddCar}>
               <form
                 id="formAddCar"
-                onSubmit={formAddCar.handleSubmit(handleSubmit)}
+                onSubmit={onSubmit}
                 className="flex flex-col gap-4"
               >
                 <FormField

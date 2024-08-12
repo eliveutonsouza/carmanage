@@ -1,6 +1,6 @@
-import getCarId from "@/actions/api/get-car-id";
+import getACar from "@/actions/cars/get-a-car";
 import { AddNewMaintenance } from "../../(home)/_components/add-new-maintenance";
-import getCarMaintenanceId from "@/actions/api/get-car-maintenance-id";
+import getCarMaintenance from "@/actions/maintenance/get-car-maintenance";
 import {
   Table,
   TableBody,
@@ -11,6 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format, formatDistance } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { cn } from "@/lib/utils";
+import changeMaintenanceForTime from "@/actions/services/changes-status-automatically";
+import DropMenuMaintenance from "./components/dropmenu-maintenance";
 
 type viewCarPageParams = {
   params: {
@@ -19,11 +23,13 @@ type viewCarPageParams = {
 };
 
 export default async function ViewCarPage({ params }: viewCarPageParams) {
-  const carData = await getCarId(params.id);
-  const dataCarMaintenanceId = await getCarMaintenanceId(params.id);
-
+  await changeMaintenanceForTime(); // Atualiza os status das tabelas
+  const carData = await getACar(params.id);
+  const dataCarMaintenanceId = await getCarMaintenance(params.id);
+  if (!carData) {
+    return <h1>Veículo não encontrado</h1>;
+  }
   const { name, plate } = carData[0];
-
   return (
     <main>
       <section className="border-b border-gray-200 p-4 flex items-center justify-between">
@@ -36,7 +42,7 @@ export default async function ViewCarPage({ params }: viewCarPageParams) {
       </section>
 
       <section className=" p-4 h-full flex flex-col gap-4">
-        <div className="flex gap-4 items-center justify-center">
+        <div className="flex flex-col gap-4 items-center justify-center">
           <Table>
             <TableCaption>Lista de Manutenções</TableCaption>
             <TableHeader>
@@ -45,36 +51,55 @@ export default async function ViewCarPage({ params }: viewCarPageParams) {
                 <TableHead>Status</TableHead>
                 <TableHead>Ultima manutenção</TableHead>
                 <TableHead>Proxima manutenção</TableHead>
-                <TableHead className="text-right">Validade</TableHead>
+                <TableHead>Validade</TableHead>
+                <TableHead>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dataCarMaintenanceId.map((rowItem) => (
+              {dataCarMaintenanceId?.map((rowItem) => (
                 <TableRow key={rowItem.id}>
                   <TableCell className="font-medium">{rowItem.name}</TableCell>
-                  <TableCell>{rowItem.status}</TableCell>
-                  <TableCell>
-                    {format(new Date(rowItem.lastMaintenance), "MM/dd/yyyy")}
+                  <TableCell
+                    className={cn(
+                      rowItem.status === "CONFORME"
+                        ? "text-green-600"
+                        : "text-destructive"
+                    )}
+                  >
+                    {rowItem.status}
                   </TableCell>
                   <TableCell>
-                    {format(new Date(rowItem.nextMaintenance), "MM/dd/yyyy")}
+                    {format(new Date(rowItem.lastMaintenance), "dd/MM/yyyy", {
+                      locale: ptBR,
+                    })}
                   </TableCell>
-
+                  <TableCell>
+                    {format(new Date(rowItem.nextMaintenance), "dd/MM/yyyy", {
+                      locale: ptBR,
+                    })}
+                  </TableCell>
                   <TableCell>
                     {formatDistance(
                       new Date(rowItem.lastMaintenance),
-                      new Date(rowItem.nextMaintenance)
-                    )}
+                      new Date(rowItem.nextMaintenance),
+                      { locale: ptBR }
+                    )
+                      .charAt(0)
+                      .toUpperCase() +
+                      formatDistance(
+                        new Date(rowItem.lastMaintenance),
+                        new Date(rowItem.nextMaintenance),
+                        { locale: ptBR }
+                      )
+                        .slice(1)
+                        .toLowerCase()}
+                  </TableCell>
+                  <TableCell>
+                    <DropMenuMaintenance {...rowItem} />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-            {/* <TableFooter>
-              <TableRow>
-                <TableCell colSpan={3}>Total</TableCell>
-                <TableCell className="text-right">$2,500.00</TableCell>
-              </TableRow>
-            </TableFooter> */}
           </Table>
         </div>
       </section>

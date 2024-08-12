@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { AreaChart, CarFront, Home } from "lucide-react";
+import { CarFront, Home } from "lucide-react";
 import Link from "next/link";
 import { MenuUserLogin } from "./menu-user-login";
 
@@ -11,13 +11,6 @@ const mockMenu = [
     href: "/dashboard",
     icon: <Home size={16} />,
   },
-
-  {
-    id: 2,
-    label: "Análises",
-    href: "/dashboard/analytics",
-    icon: <AreaChart size={16} />,
-  },
 ];
 
 export default async function SidebarDashboard() {
@@ -26,10 +19,10 @@ export default async function SidebarDashboard() {
       <nav className="border-r border-gray-200 flex flex-col justify-between">
         <div>
           <div className="border-b border-gray-200 px-4 py-6">
-            <div className="flex items-center gap-2">
+            <Link className="flex items-center gap-2" href={"/dashboard"}>
               <CarFront size={24} />
               <h1 className=" font-semibold">CarManage</h1>
-            </div>
+            </Link>
           </div>
           <div>
             <ul className="space-y-1 p-4">

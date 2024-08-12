@@ -20,30 +20,38 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 
-import { AddCarFormData, addCarSchema } from "@/schemas/add-car-schema";
-import postNewCar from "@/actions/cars/post-new-car";
 import { useRouter } from "next/navigation";
+import {
+  EditExistingCarFormData,
+  EditExistingCarFormSchema,
+} from "@/schemas/edit-existing-car-form-schema";
+import { CarTypes } from "@/@types/car-types";
+import putCarExisting from "@/actions/cars/put-car-exist";
 import { useToast } from "@/components/ui/use-toast";
 
-export function FormNewCar() {
+export function EditExistingCarForm(dataInputs: CarTypes) {
   const router = useRouter();
   const { toast } = useToast();
 
-  const formAddCar = useForm<AddCarFormData>({
-    resolver: zodResolver(addCarSchema),
+  const existingCarForm = useForm<EditExistingCarFormData>({
+    resolver: zodResolver(EditExistingCarFormSchema),
+    defaultValues: {
+      plate: dataInputs.plate,
+      surname: dataInputs.name,
+      id: dataInputs.id,
+    },
   });
 
-  const onSubmit = formAddCar.handleSubmit(async (data) => {
-    await postNewCar(data);
+  const onSubmit = existingCarForm.handleSubmit(async (data) => {
+    await putCarExisting(data);
 
     toast({
       title: "Sucesso",
-      description: "Veículo adicionado com sucesso.",
+      description: "Veículo editado com sucesso.",
     });
 
     router.refresh();
@@ -51,25 +59,22 @@ export function FormNewCar() {
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="default">
-          <Plus size={16} />
-          Adicionar Veiculo
-        </Button>
+      <DrawerTrigger className="relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 cursor-pointer">
+        Editar veículo
       </DrawerTrigger>
 
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Adicione um veiculo
+              Edite um veículo existente
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Adicione um veiculo para realizar a gestão de suas manutenções.
+              Atualize os dados do veículo para manter suas informações em dia.
             </DrawerDescription>
           </DrawerHeader>
           <div>
-            <Form {...formAddCar}>
+            <Form {...existingCarForm}>
               <form
                 id="formAddCar"
                 onSubmit={onSubmit}
@@ -77,10 +82,10 @@ export function FormNewCar() {
               >
                 <FormField
                   name="plate"
-                  control={formAddCar.control}
+                  control={existingCarForm.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Placa do veiculo</FormLabel>
+                      <FormLabel>Placa do veículo</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -96,10 +101,10 @@ export function FormNewCar() {
 
                 <FormField
                   name="surname"
-                  control={formAddCar.control}
+                  control={existingCarForm.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nome do Veiculo</FormLabel>
+                      <FormLabel>Nome do Veículo</FormLabel>
                       <FormControl>
                         <Input type="text" placeholder="Ex: Gol" {...field} />
                       </FormControl>
@@ -118,7 +123,7 @@ export function FormNewCar() {
               variant="default"
               className="mt-4"
             >
-              Salvar
+              Salvar alterações
             </Button>
 
             <DrawerClose asChild>

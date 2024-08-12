@@ -1,9 +1,9 @@
 "use server";
 
 import db from "@/lib/db";
-import getLoggedInUser from "./get-logged-in-user";
+import getLoggedInUser from "../user/get-logged-in-user";
 
-export default async function getAId(idCar: string) {
+export default async function getAllCars() {
   try {
     const user = await getLoggedInUser();
 
@@ -14,13 +14,14 @@ export default async function getAId(idCar: string) {
     const cars = await db.car.findMany({
       where: {
         userId: user.id,
-        id: idCar,
       },
     });
 
     return cars;
   } catch (error) {
-    console.log("Error getting car maintenance user logged", error);
-    throw new Error("Error getting car maintenance user logged");
+    if (error instanceof Error) {
+      console.log("Error getting all cars", error);
+      throw new Error("Error getting all cars", error);
+    }
   }
 }

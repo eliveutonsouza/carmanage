@@ -2,7 +2,7 @@
 
 import { AddCarFormData } from "@/schemas/add-car-schema";
 import db from "@/lib/db";
-import getLoggedInUser from "./get-logged-in-user";
+import getLoggedInUser from "../user/get-logged-in-user";
 
 export default async function postNewCar(data: AddCarFormData) {
   try {
@@ -20,7 +20,9 @@ export default async function postNewCar(data: AddCarFormData) {
       },
     });
   } catch (error) {
-    console.log("Error creating car", error);
-    throw new Error("Error creating car");
+    if (error instanceof Error) {
+      console.error("Error creating car", error);
+      throw new Error("Error creating car", error);
+    }
   }
 }

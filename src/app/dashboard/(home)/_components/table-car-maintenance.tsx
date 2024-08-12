@@ -11,7 +11,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  Link2Icon,
+  MoreHorizontal,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,8 +42,9 @@ import { useState } from "react";
 import {} from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { CarTypes } from "@/@types/car-types";
-import DeleteACar from "@/actions/api/delete-a-car";
+import DeleteACar from "@/actions/cars/delete-a-car";
 import { useRouter } from "next/navigation";
+import { EditExistingCarForm } from "./edit-car-exist";
 
 type CarDataTable = {
   data: CarTypes[];
@@ -65,9 +71,19 @@ export function TableCarMaintenance({ data }: CarDataTable) {
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="uppercase">{row.getValue("plate")}</div>
-      ),
+      cell: ({ row }) => {
+        const carRow = row.original;
+        return (
+          <div className="uppercase">
+            <Link
+              className="hover:underline flex gap-1 items-center"
+              href={`/dashboard/car/${carRow.id}`}
+            >
+              {row.getValue("plate")} <Link2Icon size={14} />
+            </Link>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "name",
@@ -112,9 +128,8 @@ export function TableCarMaintenance({ data }: CarDataTable) {
                 Copiar placa
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-
-              <DropdownMenuItem className="cursor-pointer">
-                <Link href={`/dashboard/car/${carRow.id}`}>Editar</Link>
+              <DropdownMenuItem asChild>
+                <EditExistingCarForm {...carRow} />
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -191,6 +206,7 @@ export function TableCarMaintenance({ data }: CarDataTable) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>

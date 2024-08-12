@@ -65,6 +65,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
+
         <Button className="w-full cursor-pointer" type="submit">
           Entrar
         </Button>

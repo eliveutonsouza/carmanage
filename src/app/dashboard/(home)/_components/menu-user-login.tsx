@@ -1,6 +1,7 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import getLoggedInUser from "@/actions/api/get-logged-in-user";
+import getLoggedInUser from "@/actions/user/get-logged-in-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +32,9 @@ export function MenuUserLogin() {
   useEffect(() => {
     async function fetchUser() {
       const userData = await getLoggedInUser();
-      setUser(userData);
+      if (userData) {
+        setUser(userData);
+      }
     }
     fetchUser();
   }, []);

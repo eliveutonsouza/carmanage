@@ -1,6 +1,6 @@
 "use server";
 import db from "@/lib/db";
-import getLoggedInUser from "./get-logged-in-user";
+import getLoggedInUser from "../user/get-logged-in-user";
 import { AddMaintenanceFormData } from "@/schemas/add-maintenance-schema";
 
 export default async function postNewMaintenance(

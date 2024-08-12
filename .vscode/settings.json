@@ -2,5 +2,6 @@
   "workbench.editor.openSideBySideDirection": "right",
   "workbench.sideBar.location": "right",
   "workbench.activityBar.location": "default",
-  "workbench.activityBar.orientation": "vertical"
+  "workbench.activityBar.orientation": "vertical",
+  "cSpell.words": ["dropmenu"]
 }
