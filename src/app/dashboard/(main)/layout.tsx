@@ -1,6 +1,6 @@
-import SidebarDashboard from "./_components/sidebar-dashboard";
+import SidebarDashboard from "../../../components/dashboard/sidebar-dashboard";
 
-export default async function LoginLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;

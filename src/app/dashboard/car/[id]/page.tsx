@@ -1,5 +1,5 @@
 import getACar from "@/actions/cars/get-a-car";
-import { AddNewMaintenance } from "../../(home)/_components/add-new-maintenance";
+import { AddNewMaintenance } from "../../(main)/_components/add-new-maintenance";
 import getCarMaintenance from "@/actions/maintenance/get-car-maintenance";
 import {
   Table,

@@ -13,7 +13,12 @@ export default async function changeMaintenanceForTime() {
       data: { status: "VENCIDA" },
     });
   } catch (error) {
-    console.error(error);
-    throw new Error("Error updating the status of each maintenance!");
+    if (error instanceof Error) {
+      console.error(
+        "Error updating the status of each maintenance:",
+        error.message
+      );
+      throw new Error("Error updating the status of each maintenance");
+    }
   }
 }

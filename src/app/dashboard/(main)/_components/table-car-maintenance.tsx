@@ -60,44 +60,35 @@ export function TableCarMaintenance({ data }: CarDataTable) {
   const columns: ColumnDef<CarTypes>[] = [
     {
       accessorKey: "plate",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Placa <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="uppercase">
+          <Link
+            className="hover:underline flex gap-1 items-center"
+            href={`/dashboard/car/${row.original.id}`}
           >
-            Placa
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const carRow = row.original;
-        return (
-          <div className="uppercase">
-            <Link
-              className="hover:underline flex gap-1 items-center"
-              href={`/dashboard/car/${carRow.id}`}
-            >
-              {row.getValue("plate")} <Link2Icon size={14} />
-            </Link>
-          </div>
-        );
-      },
+            {row.getValue("plate")} <Link2Icon size={14} />
+          </Link>
+        </div>
+      ),
     },
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Nome do veiculo
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nome do veiculo <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("name")}</div>
       ),
@@ -105,12 +96,9 @@ export function TableCarMaintenance({ data }: CarDataTable) {
     {
       id: "actions",
       enableHiding: false,
-      header: () => {
-        return <span className="flex">Ações</span>;
-      },
+      header: () => <span className="flex">Ações</span>,
       cell: ({ row }) => {
         const carRow = row.original;
-
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -131,7 +119,6 @@ export function TableCarMaintenance({ data }: CarDataTable) {
               <DropdownMenuItem asChild>
                 <EditExistingCarForm {...carRow} />
               </DropdownMenuItem>
-
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={async () => {
@@ -150,7 +137,7 @@ export function TableCarMaintenance({ data }: CarDataTable) {
 
   const table = useReactTable<CarTypes>({
     data,
-    columns: columns as ColumnDef<CarTypes>[],
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -159,12 +146,7 @@ export function TableCarMaintenance({ data }: CarDataTable) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    state: { sorting, columnFilters, columnVisibility, rowSelection },
   });
 
   return (
@@ -178,7 +160,6 @@ export function TableCarMaintenance({ data }: CarDataTable) {
           }
           className="max-w-sm"
         />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -189,20 +170,16 @@ export function TableCarMaintenance({ data }: CarDataTable) {
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -212,23 +189,21 @@ export function TableCarMaintenance({ data }: CarDataTable) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

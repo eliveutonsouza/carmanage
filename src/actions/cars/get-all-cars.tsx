@@ -4,9 +4,9 @@ import db from "@/lib/db";
 import getLoggedInUser from "../user/get-logged-in-user";
 
 export default async function getAllCars() {
-  try {
-    const user = await getLoggedInUser();
+  const user = await getLoggedInUser();
 
+  try {
     if (!user) {
       throw new Error("User not found");
     }
@@ -16,6 +16,8 @@ export default async function getAllCars() {
         userId: user.id,
       },
     });
+
+    if (!cars) return [];
 
     return cars;
   } catch (error) {

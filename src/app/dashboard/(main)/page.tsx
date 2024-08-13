@@ -8,10 +8,10 @@ import {
 import { cn } from "@/lib/utils";
 import { Car, CheckCircle, Key, Wrench } from "lucide-react";
 import { FormNewCar } from "./_components/form-new-car";
-import { TableCarMaintenance } from "./_components/table-car-maintenance";
 
 import changeMaintenanceForTime from "@/actions/services/changes-status-automatically";
 import getAllCars from "@/actions/cars/get-all-cars";
+import { TableCarMaintenance } from "./_components/table-car-maintenance";
 
 export default async function Dashboard() {
   await changeMaintenanceForTime(); // Atualiza os status das tabelas
@@ -22,30 +22,25 @@ export default async function Dashboard() {
       id: 1,
       title: "Total de Veículos",
       icon: <Car size={16} className="text-secondary" />,
-      value: dataCar?.length,
+      value: dataCar?.length || 0, // Usando o comprimento de dataCar
     },
-
     {
       id: 2,
-      title: "Veículos em Manutenção",
+      title: "Veículos com Manutenção Vencida",
       icon: <Wrench size={16} className="text-secondary" />,
-      value: 5,
-      // footer: "+5% do ultimo mês",
+      value: 2,
     },
     {
       id: 3,
       title: "Veículos Disponíveis",
       icon: <CheckCircle size={16} className="text-secondary" />,
       value: 6,
-      // footer: "+8% do ultimo mês",
     },
-
     {
       id: 4,
       title: "Veículos a vencer Manutenções",
       icon: <Key size={16} className="text-secondary" />,
       value: 3,
-      // footer: "+7% do ultimo mês",
     },
   ];
 
