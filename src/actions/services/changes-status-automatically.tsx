@@ -12,6 +12,16 @@ export default async function changeMaintenanceForTime() {
 
       data: { status: "VENCIDA" },
     });
+
+    await db.carMaintenance.updateMany({
+      where: {
+        nextMaintenance: {
+          gte: new Date(),
+        },
+      },
+
+      data: { status: "CONFORME" },
+    });
   } catch (error) {
     if (error instanceof Error) {
       console.error(

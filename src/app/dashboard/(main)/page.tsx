@@ -26,7 +26,7 @@ export default async function Dashboard() {
     },
     {
       id: 2,
-      title: "Veículos com Manutenção Vencida",
+      title: "Manutenções Vencidas",
       icon: <Wrench size={16} className="text-secondary" />,
       value: 2,
     },
@@ -38,7 +38,7 @@ export default async function Dashboard() {
     },
     {
       id: 4,
-      title: "Veículos a vencer Manutenções",
+      title: "Manutenções a Vencer",
       icon: <Key size={16} className="text-secondary" />,
       value: 3,
     },
