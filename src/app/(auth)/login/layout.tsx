@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "@/app/globals.css";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Carmanage | Login",
@@ -18,16 +17,5 @@ export default async function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="pt-br">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <main>{children}</main>
-      </body>
-    </html>
-  );
+  return <div className="grid grid-cols-2 h-screen">{children}</div>;
 }

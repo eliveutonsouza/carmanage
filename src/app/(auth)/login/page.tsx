@@ -10,7 +10,7 @@ import Image from "next/image";
 
 export default function LoginPage() {
   return (
-    <div className="grid grid-cols-2 h-screen">
+    <>
       <main className="flex items-center justify-center">
         <Card className="min-w-[472px] ">
           <CardHeader className="text-center">
@@ -35,6 +35,6 @@ export default function LoginPage() {
           priority
         />
       </section>
-    </div>
+    </>
   );
 }
