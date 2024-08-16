@@ -30,9 +30,10 @@ export default async function CreateNewUser(formData: registerFormSchemaType) {
     });
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error.message);
+      console.error("Erro ao criar usuário:", error.message);
+      throw new Error("Erro ao criar usuário");
     } else {
-      console.log("Ocorreu um erro desconhecido.", error);
+      console.error("Ocorreu um erro desconhecido.", error);
     }
   }
 }
