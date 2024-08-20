@@ -1,29 +1,16 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
 
 export async function POST() {
   try {
-    await db.carMaintenance.updateMany({
-      where: {
-        nextMaintenance: {
-          lt: new Date(),
-        },
-      },
-      data: { status: "VENCIDA" },
-    });
-
-    const maintenanceExpired = await db.carMaintenance.findMany({
-      where: {
-        status: "VENCIDA",
-      },
-    });
-
-    // Substitua "your-domain.com" pelo seu domínio
-    await fetch("/api/send", {
+    const response = await fetch("/api/mails/send-all-user", {
       method: "POST",
-      body: JSON.stringify(maintenanceExpired),
       headers: { "Content-Type": "application/json" },
     });
+
+    // Verifica se a resposta foi bem-sucedida
+    if (!response.ok) {
+      throw new Error(`Erro na requisição: ${response.statusText}`);
+    }
 
     return NextResponse.json(
       { message: "Maintenance statuses updated" },
