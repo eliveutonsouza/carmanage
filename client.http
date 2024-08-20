@@ -1,1 +1,3 @@
-POST http://localhost:3000/api/cron
+POST http://localhost:3000/api/mails/send-all-user HTTP/1.1
+content-type: application/json
+
