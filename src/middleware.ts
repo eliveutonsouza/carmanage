@@ -12,8 +12,6 @@ export function middleware(request: NextRequest) {
   // Se o cookie for encontrado, obtenha seu valor
   const token = sessionTokenCookie ? sessionTokenCookie.value : null;
 
-  console.log(token);
-
   if (!token && request.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

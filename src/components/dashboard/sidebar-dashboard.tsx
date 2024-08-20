@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CarFront, Home } from "lucide-react";
+import { CarFront, Home, Library } from "lucide-react";
 import Link from "next/link";
 import { MenuUserLogin } from "./menu-user-login";
 
@@ -10,6 +10,13 @@ const mockMenu = [
     label: "Home",
     href: "/dashboard",
     icon: <Home size={16} />,
+  },
+
+  {
+    id: 2,
+    label: "Relatórios",
+    href: "/dashboard/reports",
+    icon: <Library size={16} />,
   },
 ];
 
