@@ -1,0 +1,125 @@
+import { Resend } from "resend";
+import db from "@/lib/db";
+import * as XLSX from "xlsx"; // Importar todos os membros do módulo 'xlsx'
+import { render } from "@react-email/components";
+import ReportMaintenance from "../../../../emails/email-report-maintenance";
+import { format, differenceInDays, isBefore } from "date-fns"; // Importar funções do date-fns
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function POST() {
+  try {
+    // Buscar todos os usuários no banco de dados
+    const users = await db.user.findMany();
+
+    const currentDate = new Date();
+
+    // Iterar sobre cada usuário
+    for (const user of users) {
+      // Buscar carros e manutenções do usuário
+      const dataCar = await db.car.findMany({
+        where: { userId: user.id },
+        include: { CarMaintenance: true },
+      });
+
+      // Filtrar manutenções vencidas
+      const expiredMaintenance = dataCar.flatMap((car) =>
+        car.CarMaintenance.filter(
+          (maintenance) =>
+            maintenance.status === "VENCIDA" &&
+            isBefore(new Date(maintenance.nextMaintenance), currentDate)
+        ).map((maintenance) => {
+          const daysOverdue = differenceInDays(
+            currentDate,
+            new Date(maintenance.nextMaintenance)
+          );
+
+          return {
+            carId: car.id,
+            carName: car.name,
+            plate: car.plate,
+            maintenanceId: maintenance.id,
+            maintenanceName: maintenance.name,
+            lastMaintenance: format(
+              new Date(maintenance.lastMaintenance),
+              "dd/MM/yyyy"
+            ),
+            nextMaintenance: format(
+              new Date(maintenance.nextMaintenance),
+              "dd/MM/yyyy"
+            ),
+            status: maintenance.status,
+            daysOverdue,
+          };
+        })
+      );
+
+      // Se o usuário não tiver manutenções vencidas, pular para o próximo
+      if (expiredMaintenance.length === 0) {
+        continue;
+      }
+
+      // Gerar arquivo XLSX com manutenções vencidas
+      const workbook = XLSX.utils.book_new(); // Criar um novo livro de trabalho
+      const worksheet = XLSX.utils.json_to_sheet(expiredMaintenance, {
+        header: [
+          "carId",
+          "carName",
+          "plate",
+          "maintenanceId",
+          "maintenanceName",
+          "lastMaintenance",
+          "nextMaintenance",
+          "status",
+          "daysOverdue",
+        ],
+        skipHeader: false,
+      });
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Expired Maintenance");
+
+      // Converter a planilha em um buffer
+      const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+
+      // Gerar conteúdo do e-mail
+      const emailContent = render(ReportMaintenance({ user }));
+
+      // Enviar e-mail com anexo
+      const { data, error } = await resend.emails.send({
+        from: "Car Manage <no-replay@carmanage.tech>",
+        to: [user.email],
+        subject: "Relatório Car Maintenance - Manutenções Vencidas",
+        html: emailContent,
+        attachments: [
+          {
+            filename: "car-maintenance-report.xlsx",
+            content: buffer.toString("base64"),
+            content_type:
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          },
+        ],
+      });
+
+      if (error) {
+        console.error(`Erro ao enviar e-mail para ${user.email}:`, error);
+        continue; // Continuar para o próximo usuário mesmo se houver erro
+      }
+    }
+
+    return new Response(
+      JSON.stringify({ message: "Emails sent successfully" }),
+      { status: 200 }
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Unexpected error:", error.message);
+      return new Response(
+        JSON.stringify({ message: "Unexpected error", error: error.message }),
+        { status: 500 }
+      );
+    }
+    return new Response(JSON.stringify({ message: "Unknown error" }), {
+      status: 500,
+    });
+  }
+}
