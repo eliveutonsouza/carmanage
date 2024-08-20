@@ -7,7 +7,7 @@ import { format, differenceInDays, isBefore } from "date-fns"; // Importar funç
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+export async function GET() {
   try {
     // Buscar todos os usuários no banco de dados
     const users = await db.user.findMany();
