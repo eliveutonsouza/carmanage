@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus } from "lucide-react";
+import { LoaderCircle, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -36,15 +36,21 @@ export function FormNewCar() {
 
   const formAddCar = useForm<AddCarFormData>({
     resolver: zodResolver(addCarSchema),
+    defaultValues: {
+      plate: "",
+      surname: "",
+    },
   });
 
   const onSubmit = formAddCar.handleSubmit(async (data) => {
     await postNewCar(data);
 
     toast({
-      title: "Sucesso",
-      description: "Veículo adicionado com sucesso.",
+      title: "Sucesso! 🎉",
+      description: "Veículo adicionado com sucesso. 🚗",
     });
+
+    formAddCar.reset();
 
     router.refresh();
   });
@@ -116,9 +122,17 @@ export function FormNewCar() {
               form="formAddCar"
               type="submit"
               variant="default"
-              className="mt-4"
+              className="flex gap-2 mt-4"
+              disabled={formAddCar.formState.isSubmitting}
             >
-              Salvar
+              {formAddCar.formState.isSubmitting ? (
+                <>
+                  <LoaderCircle className="spin-in" />
+                  Salvando...
+                </>
+              ) : (
+                "Salvar"
+              )}
             </Button>
 
             <DrawerClose asChild>

@@ -63,8 +63,8 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
     await postNewMaintenance(data, idCar);
 
     toast({
-      title: "Sucesso",
-      description: "Manutenção adicionada com sucesso.",
+      title: "Sucesso 🎉",
+      description: "Manutenção adicionada com sucesso. 🚗",
     });
 
     router.refresh();

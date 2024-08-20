@@ -14,7 +14,7 @@ import { format, formatDistance } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import changeMaintenanceForTime from "@/actions/services/changes-status-automatically";
-import DropMenuMaintenance from "./components/dropmenu-maintenance";
+import DropMenuMaintenance from "./_components/dropmenu-maintenance";
 
 type viewCarPageParams = {
   params: {
@@ -41,7 +41,7 @@ export default async function ViewCarPage({ params }: viewCarPageParams) {
         </div>
       </section>
 
-      <section className=" p-4 h-full flex flex-col gap-4">
+      <section className="p-4 flex flex-col gap-4">
         <div className="flex flex-col gap-4 items-center justify-center">
           <Table>
             <TableCaption>Lista de Manutenções</TableCaption>
