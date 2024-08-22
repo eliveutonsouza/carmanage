@@ -1,26 +1,31 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // Obtém todos os cookies como uma matriz de pares chave-valor
-  const cookiesArray = request.cookies.getAll();
+  console.log(`Processing request for: ${request.nextUrl.pathname}`);
 
-  // Encontra o cookie cujo nome termina com '.session-token'
+  const cookiesArray = request.cookies.getAll();
   const sessionTokenCookie = cookiesArray.find(({ name }) =>
     /\.session-token$/.test(name)
   );
-
-  // Se o cookie for encontrado, obtenha seu valor
   const token = sessionTokenCookie ? sessionTokenCookie.value : null;
 
+  if (request.nextUrl.pathname.startsWith("/api/cron/")) {
+    console.log("Accessing cron job endpoint");
+    return NextResponse.next();
+  }
+
   if (!token && request.nextUrl.pathname.startsWith("/dashboard")) {
+    console.log("Redirecting to /login");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
   if (!!token && request.nextUrl.pathname.startsWith("/login")) {
+    console.log("Redirecting to /dashboard from /login");
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   if (!!token && request.nextUrl.pathname.startsWith("/register")) {
+    console.log("Redirecting to /dashboard from /register");
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -28,5 +33,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login:path*", "/dashboard/:path*", "/register/:path*"],
+  matcher: [
+    "/login:path*",
+    "/dashboard/:path*",
+    "/register/:path*",
+    "/api/cron/:path*",
+  ],
 };
