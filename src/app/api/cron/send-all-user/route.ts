@@ -1,9 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { sendAllUserReport } from "@/actions/cron/send-all-user-report";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     await sendAllUserReport();
+
     return NextResponse.json(
       { message: "Emails sent successfully" },
       { status: 200 }
