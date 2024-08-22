@@ -5,10 +5,10 @@ import { sendAllUserReport } from "@/actions/cron/send-all-user-report";
 
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // const authHeader = request.headers.get("authorization");
+    // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    // }
 
     await sendAllUserReport();
 
