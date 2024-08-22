@@ -1,3 +1,5 @@
+// app/api/cron/send-all-user/route.ts
+
 import { NextResponse, NextRequest } from "next/server";
 import { sendAllUserReport } from "@/actions/cron/send-all-user-report";
 
@@ -22,5 +24,6 @@ export async function GET(request: NextRequest) {
         { status: 500 }
       );
     }
+    return NextResponse.json({ message: "Unknown error" }, { status: 500 });
   }
 }
