@@ -1,5 +1,3 @@
-// app/api/send-report/route.ts
-import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import db from "@/lib/db";
 import * as XLSX from "xlsx";
@@ -9,8 +7,15 @@ import ReportMaintenance from "../../../../emails/email-report-maintenance";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST() {
+export async function GET(req: Request) {
   try {
+    const authHeader = req.headers.get("authorization");
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
     const users = await db.user.findMany();
     const currentDate = new Date();
 
@@ -92,20 +97,20 @@ export async function POST() {
       });
 
       if (error) {
-        console.error(`Erro ao enviar e-mail para ${user.email}:`, error);
+        console.error(`Error sending email to ${user.email}:`, error);
         continue;
       }
     }
 
-    return NextResponse.json({ message: "Emails sent successfully" });
+    return Response.json(
+      { message: "Emails sent successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(
       "Unexpected error:",
       error instanceof Error ? error.message : "Unknown error"
     );
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
