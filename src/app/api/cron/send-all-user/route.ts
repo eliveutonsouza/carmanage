@@ -4,19 +4,12 @@ import * as XLSX from "xlsx";
 import { isBefore, differenceInDays, format } from "date-fns";
 import { render } from "@react-email/components";
 import ReportMaintenance from "../../../../emails/email-report-maintenance";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const authHeader = req.headers.get("authorization");
-    console.log("Authorization Header:", authHeader); // Added this log
-
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const users = await db.user.findMany();
     const currentDate = new Date();
 

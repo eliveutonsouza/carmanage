@@ -3,16 +3,21 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+
+  // Permitir acesso ao endpoint do cron job
+  if (request.nextUrl.pathname.startsWith("/api/cron/")) {
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    return NextResponse.next();
+  }
+
   const cookiesArray = request.cookies.getAll();
   const sessionTokenCookie = cookiesArray.find(({ name }) =>
     /\.session-token$/.test(name)
   );
   const token = sessionTokenCookie ? sessionTokenCookie.value : null;
-
-  // Permitir acesso ao endpoint do cron job
-  if (request.nextUrl.pathname.startsWith("/api/cron/")) {
-    return NextResponse.next();
-  }
 
   if (!token && request.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
