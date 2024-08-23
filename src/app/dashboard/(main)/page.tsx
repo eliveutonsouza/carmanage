@@ -12,35 +12,67 @@ import { FormNewCar } from "./_components/form-new-car";
 import changeMaintenanceForTime from "@/actions/services/changes-status-automatically";
 import getAllCars from "@/actions/cars/get-all-cars";
 import { TableCarMaintenance } from "./_components/table-car-maintenance";
+import { addDays, isBefore } from "date-fns";
 
 export default async function Dashboard() {
   await changeMaintenanceForTime(); // Atualiza os status das tabelas
   const dataCar = await getAllCars();
+
+  const vehicleMaintenanceExpired = dataCar?.filter((car) => {
+    if (car.CarMaintenance.length > 0) {
+      return car.CarMaintenance.every(
+        (maintenance: { status: string }) => maintenance.status === "VENCIDA"
+      );
+    }
+
+    return false;
+  });
+
+  const vehiclesAvailable = dataCar?.filter((car) => {
+    return car.CarMaintenance.every(
+      (maintenance: { status: string }) => maintenance.status === "CONFORME"
+    );
+  });
+
+  const vehiclesToExpireIn10Days = dataCar?.filter((car) => {
+    if (car.CarMaintenance.length > 0) {
+      return car.CarMaintenance.some(
+        (maintenance) =>
+          maintenance.status === "CONFORME" &&
+          isBefore(
+            new Date(maintenance.nextMaintenance),
+            addDays(new Date(), 10)
+          )
+      );
+    }
+
+    return false;
+  });
 
   const CardsDashboard = [
     {
       id: 1,
       title: "Total de Veículos",
       icon: <Car size={16} className="text-secondary" />,
-      value: dataCar?.length || 0, // Usando o comprimento de dataCar
+      value: dataCar?.length || 0,
     },
     {
       id: 2,
       title: "Manutenções Vencidas",
       icon: <Wrench size={16} className="text-secondary" />,
-      value: 2,
+      value: vehicleMaintenanceExpired?.length || 0,
     },
     {
       id: 3,
       title: "Veículos Disponíveis",
       icon: <CheckCircle size={16} className="text-secondary" />,
-      value: 6,
+      value: vehiclesAvailable?.length || 0,
     },
     {
       id: 4,
       title: "Manutenções a Vencer",
       icon: <Key size={16} className="text-secondary" />,
-      value: 3,
+      value: vehiclesToExpireIn10Days?.length || 0,
     },
   ];
 

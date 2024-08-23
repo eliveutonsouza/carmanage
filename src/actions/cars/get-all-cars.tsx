@@ -15,6 +15,9 @@ export default async function getAllCars() {
       where: {
         userId: user.id,
       },
+      include: {
+        CarMaintenance: true,
+      },
     });
 
     if (!cars) return [];
