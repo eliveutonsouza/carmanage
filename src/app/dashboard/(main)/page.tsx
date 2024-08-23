@@ -15,7 +15,9 @@ import { TableCarMaintenance } from "./_components/table-car-maintenance";
 import { addDays, isBefore } from "date-fns";
 
 export default async function Dashboard() {
-  await changeMaintenanceForTime(); // Atualiza os status das tabelas
+  // @changeMaintenanceForTime Updates the maintenance table statuses when accessing the dashboard page
+  await changeMaintenanceForTime();
+
   const dataCar = await getAllCars();
 
   const vehicleMaintenanceExpired = dataCar?.filter((car) => {
