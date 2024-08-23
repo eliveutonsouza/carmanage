@@ -14,7 +14,6 @@ import { z } from "zod";
 
 type ReportMaintenanceProps = {
   user: z.infer<typeof UserSchema>;
-  // data: z.infer<typeof CarManageMailSchema>[];
 };
 
 export function ReportMaintenance({ user }: ReportMaintenanceProps) {
@@ -53,7 +52,7 @@ export function ReportMaintenance({ user }: ReportMaintenanceProps) {
           <Text style={styles.paragraph}>Time Car Manage!</Text>
           <Hr style={styles.hr} />
           <Text style={styles.footer}>
-            470 Noor Ave STE B #1148, South San Francisco, CA 94080
+            Este é um email automático. Por favor, não responda a este email.
           </Text>
         </Container>
       </Body>
