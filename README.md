@@ -1,39 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Carmanage
 
-## Getting Started
+Este é um projeto [Next.js](https://nextjs.org/) para gestão de manutenção de veículos, criado com [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-First, run the development server:
+## Começando
+
+Primeiro, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
 
-# and then run the docker compose
-docker compose  up -d
+# e então execute o docker compose
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Você pode começar a editar a página modificando `app/page.tsx`. A página se atualiza automaticamente conforme você edita o arquivo.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Este projeto utiliza [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) para otimizar e carregar automaticamente a fonte Inter, uma fonte personalizada do Google.
 
-## Learn More
+## Tecnologias Utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Auth0](https://auth0.com/)
+- [Shadcn/ui](https://shadcn-ui.vercel.app/)
+- [Docker](https://www.docker.com/)
+- [Ingest](https://ingest.dev/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Rotas de Páginas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `/` - Página inicial
+- `/dashboard` - Painel de controle
+- `/dashboard/reports` - Relatórios
+- `/login` - Página de login
+- `/register` - Página de registro
+- `/dashboard/car/[id]` - Detalhes do veículo
 
-## Deploy on Vercel
+## Rotas da API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `POST /api/mails/send-a-user` - Enviar e-mail com relatório de manutenções vencidas.
+- `GET /api/cron/send-all-user` - Enviar relatórios para todos os usuários (produção).
+- `GET /api/cron/` - Endpoint para cron (desenvolvimento).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Acessando as Rotas da API com Client HTTP
+
+### Exemplo de requisição para desenvolvimento
+
+```http
+GET http://localhost:3000/api/cron/send-all-user HTTP/1.1
+Content-Type: application/json
+```
+
+### Exemplo de requisição para produção
+
+```http
+GET https://carmanage.tech/api/cron/send-all-user HTTP/1.1
+Content-Type: application/json
+```
+
+## Aprenda mais sobre Next.js
+
+- [Documentação do Next.js](https://nextjs.org/docs) - aprenda sobre os recursos e a API do Next.js.
+- [Aprenda Next.js](https://nextjs.org/learn) - um tutorial interativo de Next.js.
+
+Você pode conferir [o repositório do Next.js no GitHub](https://github.com/vercel/next.js/) - seu feedback e contribuições são bem-vindos!
+
+## Deploy no Vercel
+
+A maneira mais fácil de implantar seu aplicativo Next.js é usar a [Plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) dos criadores do Next.js.
+
+Confira nossa [documentação de implantação do Next.js](https://nextjs.org/docs/deployment) para mais detalhes.
