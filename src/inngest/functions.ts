@@ -10,7 +10,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmailReport = inngest.createFunction(
   { id: "send/email/report" },
-  { cron: "*/5 * * * *" }, // Executa a cada 5 minutos
+  { cron: "0 0 * * *" }, // Executa todos os dias a 00h
   async () => {
     const users = await db.user.findMany();
     const currentDate = new Date();
