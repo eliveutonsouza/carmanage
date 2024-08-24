@@ -34,7 +34,7 @@ export default async function ReportPage() {
         <h2 className="text-xl font-semibold">Relatórios</h2>
 
         <ButtonSendMail>
-          <MailPlus size={24} className="mr-2" />
+          <MailPlus size={16} className="mr-2" />
           Receber um novo relatório
         </ButtonSendMail>
       </section>
