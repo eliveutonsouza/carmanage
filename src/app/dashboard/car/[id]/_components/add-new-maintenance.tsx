@@ -27,7 +27,7 @@ import {
   PopoverContent,
 } from "@radix-ui/react-popover";
 import { format } from "date-fns";
-import { CalendarIcon, Plus } from "lucide-react";
+import { CalendarIcon, LoaderCircle, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
@@ -50,7 +50,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
   const { toast } = useToast();
   const router = useRouter();
 
-  const formAddCar = useForm<AddMaintenanceFormData>({
+  const formAddMaintenance = useForm<AddMaintenanceFormData>({
     resolver: zodResolver(addMaintenanceSchema),
     defaultValues: {
       nameMaintenance: "",
@@ -59,7 +59,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
     },
   });
 
-  const onSubmit = formAddCar.handleSubmit(async (data) => {
+  const onSubmit = formAddMaintenance.handleSubmit(async (data) => {
     await postNewMaintenance(data, idCar);
 
     toast({
@@ -73,7 +73,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button>
+        <Button className="flex gap-1">
           <Plus size={16} />
           Adicionar Manutenção
         </Button>
@@ -90,7 +90,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
             </DrawerDescription>
           </DrawerHeader>
           <div>
-            <Form {...formAddCar}>
+            <Form {...formAddMaintenance}>
               <form
                 id="formAddCar"
                 onSubmit={onSubmit}
@@ -98,7 +98,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
               >
                 <FormField
                   name={"nameMaintenance"}
-                  control={formAddCar.control}
+                  control={formAddMaintenance.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nome da manutenção</FormLabel>
@@ -116,7 +116,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
                 <div className="flex gap-4">
                   <FormField
                     name={"lastDateMaintenance"}
-                    control={formAddCar.control}
+                    control={formAddMaintenance.control}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Ultima manutenção</FormLabel>
@@ -157,7 +157,7 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
 
                   <FormField
                     name={"nextDateMaintenance"}
-                    control={formAddCar.control}
+                    control={formAddMaintenance.control}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Proxima manutenção</FormLabel>
@@ -200,15 +200,27 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
             </Form>
           </div>
 
-          <DrawerFooter>
-            <Button
-              form="formAddCar"
-              type="submit"
-              variant="default"
-              className="mt-4"
-            >
-              Salvar
-            </Button>
+          <DrawerFooter className="px-0">
+            {formAddMaintenance.formState.isSubmitting ? (
+              <Button
+                form="formAddMaintenance"
+                type="submit"
+                variant="default"
+                className="flex gap-2 mt-4"
+                disabled
+              >
+                <LoaderCircle className="animate-spin" />
+                Salvando...
+              </Button>
+            ) : (
+              <Button
+                form="formAddCar"
+                type="submit"
+                className="w-full cursor-pointer"
+              >
+                Salvar
+              </Button>
+            )}
 
             <DrawerClose asChild>
               <Button variant="outline">Cancelar</Button>

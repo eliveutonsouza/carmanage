@@ -58,7 +58,7 @@ export function FormNewCar() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="default">
+        <Button className="flex gap-1" variant="default">
           <Plus size={16} />
           Adicionar Veiculo
         </Button>
@@ -117,23 +117,27 @@ export function FormNewCar() {
             </Form>
           </div>
 
-          <DrawerFooter>
-            <Button
-              form="formAddCar"
-              type="submit"
-              variant="default"
-              className="flex gap-2 mt-4"
-              disabled={formAddCar.formState.isSubmitting}
-            >
-              {formAddCar.formState.isSubmitting ? (
-                <>
-                  <LoaderCircle className="spin-in" />
-                  Salvando...
-                </>
-              ) : (
-                "Salvar"
-              )}
-            </Button>
+          <DrawerFooter className="px-0">
+            {formAddCar.formState.isSubmitting ? (
+              <Button
+                form="formAddCar"
+                type="submit"
+                variant="default"
+                className="flex gap-2 mt-4"
+                disabled
+              >
+                <LoaderCircle className="animate-spin" />
+                Salvando...
+              </Button>
+            ) : (
+              <Button
+                form="formAddCar"
+                type="submit"
+                className="w-full cursor-pointer"
+              >
+                Salvar
+              </Button>
+            )}
 
             <DrawerClose asChild>
               <Button variant="outline">Cancelar</Button>

@@ -19,10 +19,27 @@ export default async function getLoggedInUser() {
     });
 
     if (user) {
-      const { email, image, name, id, createdAt, updatedAt, emailVerified } =
-        user;
+      const {
+        email,
+        image,
+        name,
+        id,
+        createdAt,
+        updatedAt,
+        emailVerified,
+        acceptedReportEmails,
+      } = user;
 
-      return { email, image, name, id, createdAt, updatedAt, emailVerified };
+      return {
+        email,
+        image,
+        name,
+        id,
+        createdAt,
+        updatedAt,
+        emailVerified,
+        acceptedReportEmails,
+      };
     }
   } catch (error) {
     if (error instanceof Error) {

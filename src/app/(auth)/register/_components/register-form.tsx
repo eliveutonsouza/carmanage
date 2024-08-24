@@ -20,9 +20,10 @@ import {
 } from "@/schemas/register-form-schema";
 import CreateNewUser from "../../../../actions/auth/register";
 import { signIn } from "next-auth/react";
+import { LoaderCircle } from "lucide-react";
 
 export default function RegisterForm() {
-  const formLogin = useForm<registerFormSchemaType>({
+  const formRegister = useForm<registerFormSchemaType>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       name: "",
@@ -44,13 +45,13 @@ export default function RegisterForm() {
   }
 
   return (
-    <Form {...formLogin}>
+    <Form {...formRegister}>
       <form
-        onSubmit={formLogin.handleSubmit(handleSubmit)}
+        onSubmit={formRegister.handleSubmit(handleSubmit)}
         className="space-y-4"
       >
         <FormField
-          control={formLogin.control}
+          control={formRegister.control}
           name="name"
           render={({ field }) => (
             <FormItem>
@@ -63,7 +64,7 @@ export default function RegisterForm() {
           )}
         />
         <FormField
-          control={formLogin.control}
+          control={formRegister.control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -76,7 +77,7 @@ export default function RegisterForm() {
           )}
         />
         <FormField
-          control={formLogin.control}
+          control={formRegister.control}
           name="password"
           render={({ field }) => (
             <FormItem>
@@ -89,18 +90,28 @@ export default function RegisterForm() {
           )}
         />
 
-        <Button className="w-full cursor-pointer" type="submit">
-          Registrar
-        </Button>
+        {formRegister.formState.isSubmitting ? (
+          <Button
+            disabled
+            className="w-full cursor-pointer flex gap-2"
+            type="submit"
+          >
+            <LoaderCircle className="animate-spin" /> Registrando...
+          </Button>
+        ) : (
+          <Button className="w-full cursor-pointer" type="submit">
+            Registrar
+          </Button>
+        )}
         <CardFooter>
           <Link
             className={cn(
               buttonVariants({ variant: "link", size: "sm" }),
               "mt-2 mx-auto cursor-pointer"
             )}
-            href="/register"
+            href="/login"
           >
-            Não possui conta?
+            Realizar login em uma conta existente
           </Link>
         </CardFooter>
       </form>

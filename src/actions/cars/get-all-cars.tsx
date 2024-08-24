@@ -6,11 +6,11 @@ import getLoggedInUser from "../user/get-logged-in-user";
 export default async function getAllCars() {
   const user = await getLoggedInUser();
 
-  try {
-    if (!user) {
-      throw new Error("User not found");
-    }
+  if (!user) {
+    throw new Error("User not found");
+  }
 
+  try {
     const cars = await db.car.findMany({
       where: {
         userId: user.id,

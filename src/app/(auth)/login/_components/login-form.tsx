@@ -19,8 +19,11 @@ import {
   loginFormSchemaType,
 } from "@/schemas/login-form-schema";
 import userLogin from "@/actions/auth/login";
+import { useToast } from "@/components/ui/use-toast"; // Importar o hook de toast
+import { LoaderCircle } from "lucide-react";
 
 export default function LoginForm() {
+  const { toast } = useToast(); // Inicializar o toast
   const formLogin = useForm<loginFormSchemaType>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -29,8 +32,16 @@ export default function LoginForm() {
     },
   });
 
-  function handleSubmit(values: loginFormSchemaType) {
-    userLogin(values);
+  async function handleSubmit(values: loginFormSchemaType) {
+    try {
+      await userLogin(values);
+    } catch (error) {
+      toast({
+        title: "Erro ao fazer login :(",
+        description: "Usuário não encontrado ou senha inválida.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -66,9 +77,19 @@ export default function LoginForm() {
           )}
         />
 
-        <Button className="w-full cursor-pointer" type="submit">
-          Entrar
-        </Button>
+        {formLogin.formState.isSubmitting ? (
+          <Button
+            disabled
+            className="w-full cursor-pointer flex gap-2"
+            type="submit"
+          >
+            <LoaderCircle className="animate-spin" /> Entrando...
+          </Button>
+        ) : (
+          <Button className="w-full cursor-pointer" type="submit">
+            Entrar
+          </Button>
+        )}
 
         <CardFooter>
           <Link

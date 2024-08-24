@@ -16,6 +16,11 @@ export const sendEmailReport = inngest.createFunction(
     const currentDate = new Date();
 
     for (const user of users) {
+      // Verifica se o usuário aceitou receber e-mails de relatórios
+      if (!user.acceptedReportEmails) {
+        continue; // Pula para o próximo usuário
+      }
+
       const dataCar = await db.car.findMany({
         where: { userId: user.id },
         include: { CarMaintenance: true },

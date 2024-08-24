@@ -16,7 +16,7 @@ export default async function userLogin(loginFormData: loginFormSchemaType) {
     });
   } catch (error) {
     if (error instanceof AuthError && error.type === "CredentialsSignin") {
-      throw new Error("Credenciais inválidas");
+      return error;
     }
 
     throw error;

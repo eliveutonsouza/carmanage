@@ -5,12 +5,15 @@ import {
 } from "@/components/ui/button";
 import { sendMailReport } from "../actions";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface ButtonSendMailProps extends OriginalButtonProps {
   children: React.ReactNode;
 }
 
 export function ButtonSendMail({ children, ...props }: ButtonSendMailProps) {
+  const router = useRouter();
+
   async function actionSendMail() {
     const response = await sendMailReport();
 
@@ -20,13 +23,14 @@ export function ButtonSendMail({ children, ...props }: ButtonSendMailProps) {
         description: "Verifique sua caixa de e-mails para visualizar!",
       });
     } else {
-      console.log("dentro do else", response);
       toast({
         title: "Erro ao enviar relatório! 😢",
         description: "Tente novamente mais tarde.",
         variant: "destructive",
       });
     }
+
+    router.refresh();
   }
 
   return (
