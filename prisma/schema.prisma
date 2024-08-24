@@ -15,20 +15,22 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  passwordHash  String?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                   String          @id @default(cuid())
+  name                 String?
+  email                String          @unique
+  emailVerified        DateTime?
+  passwordHash         String?
+  image                String?
+  acceptedReportEmails Boolean         @default(true)
+  accounts             Account[]
+  sessions             Session[]
   // Optional for WebAuthn support
-  Authenticator Authenticator[]
+  Authenticator        Authenticator[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Car       Car[]
+  createdAt                   DateTime                      @default(now())
+  updatedAt                   DateTime                      @updatedAt
+  Car                         Car[]
+  ReportCarMaintenanceHistory ReportCarMaintenanceHistory[]
 }
 
 model Account {
@@ -90,7 +92,7 @@ model Car {
   id             String           @id @default(cuid())
   name           String
   plate          String           @unique
-  userId         String           @unique
+  userId         String
   user           User             @relation(fields: [userId], references: [id])
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
@@ -114,6 +116,16 @@ model CarMaintenance {
   lastMaintenance DateTime
   nextMaintenance DateTime
   status          CarMaintenanceStatus @default(CONFORME)
-  carId           String               @unique
+  carId           String
   car             Car                  @relation(fields: [carId], references: [id])
+}
+
+model ReportCarMaintenanceHistory {
+  id         String   @id @default(cuid())
+  nameReport String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
