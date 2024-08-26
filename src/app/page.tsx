@@ -1,17 +1,25 @@
 "use client";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { About } from "./_components/about";
+import { Contact } from "./_components/contact";
+import { Faq } from "./_components/faq";
+import { Features } from "./_components/features";
+import Footer from "./_components/footer";
+import { Header } from "./_components/header";
+import { Hero } from "./_components/hero";
+import { Team } from "./_components/team";
 
 export default function LandingPage() {
   return (
-    <main className="flex items-center justify-center">
-      <Link
-        href={"/login"}
-        className={cn(buttonVariants({ variant: "default" }), "cursor-pointer")}
-      >
-        Login
-      </Link>
-    </main>
+    <>
+      <Header />
+      <Hero />
+      <Features />
+      <About />
+      {/* <Pricing /> */}
+      <Faq />
+      <Team />
+      <Contact />
+      <Footer />
+    </>
   );
 }
