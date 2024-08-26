@@ -17,6 +17,9 @@ bun dev
 
 # e então execute o docker compose
 docker compose up -d
+
+# monitore os logs do inngest
+npx inngest-cli@latest dev
 ```
 
 Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
