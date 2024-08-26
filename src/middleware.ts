@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
   // Função para verificar permissões de acesso
   const isPublicPath = (path: string) => {
     // Define rotas públicas que não requerem autenticação
-    return path.startsWith("/api/cron/") || path.startsWith("/api/inngest/");
+    return path.startsWith("/api/inngest/");
   };
 
   // Permitir acesso a rotas públicas
@@ -49,6 +49,5 @@ export const config = {
     "/login:path*", // Rota de login
     "/dashboard/:path*", // Rota de dashboard
     "/register/:path*", // Rota de registro
-    "/api/cron/:path*", // Rota de API cron
   ],
 };

@@ -34,6 +34,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           password,
           user.passwordHash ?? ""
         );
+
         if (!passwordMatch) {
           return null;
         }
