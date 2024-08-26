@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const userId = "cm077yx6p00002jg8698g51g9";
+  const userId = "cm0ak6r490000y22at2i0e3lt";
 
   const carNames = [
     "Ford Mustang",
