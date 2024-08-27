@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CarFront, Home, Library } from "lucide-react";
+import { Home, Library } from "lucide-react";
 import Link from "next/link";
 import { MenuUserLogin } from "./menu-user-login";
+import Image from "next/image";
 
 const mockMenu = [
   {
@@ -25,10 +26,17 @@ export default async function SidebarDashboard() {
     <>
       <nav className="border-r border-gray-200 flex flex-col justify-between">
         <div>
-          <div className="border-b border-gray-200 px-4 py-6">
+          <div className="border-b border-gray-200 px-4 py-4">
             <Link className="flex items-center gap-2" href={"/dashboard"}>
-              <CarFront size={24} />
-              <h1 className=" font-semibold">CarManage</h1>
+              <Image
+                src="/logotipo-full-dark.svg"
+                alt="Logo"
+                fetchPriority="high"
+                quality={100}
+                width={150}
+                height={150}
+                className="h-auto"
+              />
             </Link>
           </div>
           <div>
