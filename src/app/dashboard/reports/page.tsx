@@ -17,12 +17,12 @@ import {
 } from "@/components/ui/table";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import getLoggedInUser from "@/actions/user/get-logged-in-user";
 import { ButtonSendMail } from "./_components/button-send-mail";
 import { MailPlus } from "lucide-react";
+import { FormSettingsReport } from "./_components/form-settings-report";
 import { getReportHistory } from "./actions";
 import { format } from "date-fns";
-import { FormSettingsReport } from "./_components/form-settings-report";
-import getLoggedInUser from "@/actions/user/get-logged-in-user";
 
 export default async function ReportPage() {
   const dataReports = await getReportHistory();

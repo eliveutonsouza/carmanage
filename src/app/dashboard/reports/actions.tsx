@@ -62,8 +62,13 @@ export async function saveSendReport(data: z.infer<typeof reportSchema>) {
 }
 
 export async function getReportHistory() {
+  const user = await getLoggedInUser();
+
+  if (!user) {
+    return [];
+  }
+
   try {
-    const user = await getLoggedInUser();
     const reports = await db.reportCarMaintenanceHistory.findMany({
       where: {
         userId: user?.id,
