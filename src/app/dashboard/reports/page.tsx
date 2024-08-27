@@ -32,7 +32,6 @@ export default async function ReportPage() {
     <main>
       <section className="border-b border-gray-200 p-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold">Relatórios</h2>
-
         <ButtonSendMail>
           <MailPlus size={16} className="mr-2" />
           Receber um novo relatório
@@ -45,6 +44,7 @@ export default async function ReportPage() {
             <TabsTrigger value="history">Histórico</TabsTrigger>
             <TabsTrigger value="config-history">Configurações</TabsTrigger>
           </TabsList>
+
           <TabsContent className="max-h-screen" value="history">
             <Card>
               <CardHeader>

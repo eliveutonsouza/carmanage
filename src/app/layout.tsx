@@ -10,7 +10,7 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Carmanage",
+  title: "Car Manage",
   description: "Aplicação de Gestão de manutenção de veículos",
 };
 

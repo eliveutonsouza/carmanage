@@ -62,14 +62,21 @@ export async function saveSendReport(data: z.infer<typeof reportSchema>) {
 }
 
 export async function getReportHistory() {
-  const user = await getLoggedInUser();
-  const reports = await db.reportCarMaintenanceHistory.findMany({
-    where: {
-      userId: user?.id,
-    },
-  });
+  try {
+    const user = await getLoggedInUser();
+    const reports = await db.reportCarMaintenanceHistory.findMany({
+      where: {
+        userId: user?.id,
+      },
+    });
 
-  return reports;
+    return reports;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+    console.error(error);
+  }
 }
 
 type data = {

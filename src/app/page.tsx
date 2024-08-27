@@ -1,4 +1,3 @@
-"use client";
 import { About } from "./_components/about";
 import { Contact } from "./_components/contact";
 import { Faq } from "./_components/faq";
@@ -15,7 +14,6 @@ export default function LandingPage() {
       <Hero />
       <Features />
       <About />
-      {/* <Pricing /> */}
       <Faq />
       <Team />
       <Contact />

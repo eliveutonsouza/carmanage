@@ -68,7 +68,7 @@ export function Header() {
               <div className="lg:sr-only">
                 <Sheet>
                   <SheetTrigger>
-                    <AlignCenter size={24} />
+                    <AlignCenter className="text-yellow-50" size={24} />
                   </SheetTrigger>
                   <SheetContent>
                     <SheetHeader>

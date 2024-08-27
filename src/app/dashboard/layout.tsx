@@ -1,17 +1,11 @@
 import SidebarDashboard from "../../components/dashboard/sidebar-dashboard";
 import "@/app/globals.css";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "Carmanage | Dashboard",
+  title: "Car Manage | Dashboard",
   description: "Painel de controle do Carmanage!",
 };
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export default async function DashboardLayout({
   children,

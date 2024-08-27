@@ -44,7 +44,7 @@ export function Contact() {
                       Nossa Localização
                     </h5>
                     <p className="text-base text-body-color">
-                      401 Broadway, 24th Floor, Orchard Cloud View, London
+                      207 Albuquerque Avenida - Veredinha, MG / 72902-797
                     </p>
                   </div>
                 </div>

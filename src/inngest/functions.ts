@@ -1,10 +1,10 @@
 import { Resend } from "resend";
 import { inngest } from "./client";
-import db from "@/lib/db"; // Importar o banco de dados
-import * as XLSX from "xlsx"; // Importar o módulo XLSX
-import { render } from "@react-email/components"; // Importar renderizador de e-mail
-import ReportMaintenance from "@/emails/email-report-maintenance"; // Importar o template de e-mail
-import { format, differenceInDays, isBefore } from "date-fns"; // Importar funções do date-fns
+import db from "@/lib/db";
+import * as XLSX from "xlsx";
+import { render } from "@react-email/components";
+import ReportMaintenance from "@/emails/email-report-maintenance";
+import { format, differenceInDays, isBefore } from "date-fns";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -16,9 +16,8 @@ export const sendEmailReport = inngest.createFunction(
     const currentDate = new Date();
 
     for (const user of users) {
-      // Verifica se o usuário aceitou receber e-mails de relatórios
       if (!user.acceptedReportEmails) {
-        continue; // Pula para o próximo usuário
+        continue;
       }
 
       const dataCar = await db.car.findMany({

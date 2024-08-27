@@ -37,8 +37,6 @@ export function FormSettingsReport({ preferences }: FormSettingsReportProps) {
   const onSubmit = formSettingReport.handleSubmit(async (data) => {
     const response = await putPreferencesUserOfReportsEmails(data);
 
-    console.log("form: ", data);
-
     if (!!response) {
       toast({
         title: "Sucesso 🎉",

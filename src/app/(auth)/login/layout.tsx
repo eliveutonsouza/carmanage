@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  title: "Carmanage | Login",
+  title: "Car Manage | Login",
   description: "Faça seu login!",
 };
 
