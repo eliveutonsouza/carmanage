@@ -28,7 +28,7 @@ export function EmailAlertMaintenance({ userName, alerts }: Props) {
     <Html>
       <Head />
       <Preview>
-        {alerts.length} manutenção(ões) próxima(s) do vencimento — Car Manage
+        {`${alerts.length} manutenção(ões) próxima(s) do vencimento — Car Manage`}
       </Preview>
       <Body style={styles.main}>
         <Container style={styles.container}>

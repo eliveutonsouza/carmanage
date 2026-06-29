@@ -23,6 +23,10 @@ type User = {
   id: string;
   name: string | null;
   email: string;
+  image: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  emailVerified: Date | null;
 };
 
 export function buildExpiredMaintenanceRows(cars: Car[]) {
