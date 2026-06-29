@@ -1,28 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-  const secureCookie = req.nextUrl.protocol === "https:";
-  const cookieName = secureCookie
-    ? "__Secure-authjs.session-token"
-    : "authjs.session-token";
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET!,
-    salt: cookieName,
-  });
-  const { pathname } = req.nextUrl;
+export function middleware(request: NextRequest) {
+  const cookiesArray = request.cookies.getAll();
+  const sessionTokenCookie = cookiesArray.find(({ name }) =>
+    /\.session-token$/.test(name)
+  );
+  const token = sessionTokenCookie ? sessionTokenCookie.value : null;
 
-  if (pathname.startsWith("/api/inngest/")) return NextResponse.next();
+  const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/api/inngest/")) {
+    return NextResponse.next();
+  }
 
   if (!token && pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
+
   if (token && pathname.startsWith("/login")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
+
   if (token && pathname.startsWith("/register")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
@@ -30,10 +30,8 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/login",
     "/login/:path*",
     "/dashboard/:path*",
-    "/register",
     "/register/:path*",
   ],
 };
