@@ -48,7 +48,7 @@ export function ResetPasswordForm({ token }: Props) {
 
   async function onSubmit(values: z.infer<typeof schema>) {
     const result = await resetPassword(token, values.password);
-    if (result.error) {
+    if ("error" in result) {
       setErrorMsg(result.error);
       setStatus("error");
     } else {
