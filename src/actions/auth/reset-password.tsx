@@ -7,7 +7,7 @@ export async function resetPassword(token: string, newPassword: string) {
   const resetToken = await db.passwordResetToken.findUnique({ where: { token } });
 
   if (!resetToken || resetToken.expires < new Date()) {
-    return { error: "Link expirado ou inválido. Solicite um novo." };
+    return { success: false as const, error: "Link expirado ou inválido. Solicite um novo." };
   }
 
   const passwordHash = await hash(newPassword, 5);
@@ -19,5 +19,5 @@ export async function resetPassword(token: string, newPassword: string) {
 
   await db.passwordResetToken.delete({ where: { token } });
 
-  return { success: true };
+  return { success: true as const };
 }
