@@ -1,29 +1,10 @@
-import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import { authConfig } from "@/auth.config";
 
-export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
-
-  if (nextUrl.pathname.startsWith("/api/inngest/")) {
-    return NextResponse.next();
-  }
-
-  if (!isLoggedIn && nextUrl.pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
-  if (isLoggedIn && nextUrl.pathname.startsWith("/login")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
-  }
-
-  if (isLoggedIn && nextUrl.pathname.startsWith("/register")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
-  }
-
-  return NextResponse.next();
-});
+export default NextAuth(authConfig).auth;
 
 export const config = {
-  matcher: ["/login:path*", "/dashboard/:path*", "/register/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
