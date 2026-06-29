@@ -14,11 +14,12 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: { token?: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export default function ResetPasswordPage({ searchParams }: Props) {
-  const token = searchParams.token ?? "";
+  const rawToken = searchParams.token;
+  const token = Array.isArray(rawToken) ? rawToken[0] ?? "" : rawToken ?? "";
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
