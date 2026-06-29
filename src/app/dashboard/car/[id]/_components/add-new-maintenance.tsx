@@ -33,6 +33,13 @@ import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   AddMaintenanceFormData,
@@ -54,8 +61,12 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
     resolver: zodResolver(addMaintenanceSchema),
     defaultValues: {
       nameMaintenance: "",
+      type: "PREVENTIVA",
       lastDateMaintenance: new Date(),
       nextDateMaintenance: new Date(),
+      cost: "",
+      provider: "",
+      notes: "",
     },
   });
 
@@ -64,9 +75,10 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
 
     toast({
       title: "Sucesso 🎉",
-      description: "Manutenção adicionada com sucesso. 🚗",
+      description: "Manutenção adicionada com sucesso.",
     });
 
+    formAddMaintenance.reset();
     router.refresh();
   });
 
@@ -80,68 +92,100 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
       </DrawerTrigger>
 
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="mx-auto w-full max-w-lg">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Adicionar uma nova manutenção
+              Adicionar nova manutenção
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Adicione uma nova manutenção para o seu veículo.
+              Preencha os dados da manutenção do veículo.
             </DrawerDescription>
           </DrawerHeader>
-          <div>
+          <div className="px-4">
             <Form {...formAddMaintenance}>
               <form
                 id="formAddCar"
                 onSubmit={onSubmit}
                 className="flex flex-col gap-4"
               >
-                <FormField
-                  name={"nameMaintenance"}
-                  control={formAddMaintenance.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome da manutenção</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Ex: Troca de oleo"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <FormField
-                    name={"lastDateMaintenance"}
+                    name="nameMaintenance"
+                    control={formAddMaintenance.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Nome da manutenção</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: Troca de óleo" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    name="type"
                     control={formAddMaintenance.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Ultima manutenção</FormLabel>
+                        <FormLabel>Tipo</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecione o tipo" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="PREVENTIVA">Preventiva</SelectItem>
+                            <SelectItem value="CORRETIVA">Corretiva</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    name="cost"
+                    control={formAddMaintenance.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Custo (R$)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            placeholder="0,00"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    name="lastDateMaintenance"
+                    control={formAddMaintenance.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Última manutenção</FormLabel>
                         <FormControl>
                           <Popover>
                             <PopoverTrigger asChild>
                               <Button
-                                variant={"outline"}
+                                variant="outline"
                                 className={cn(
                                   "w-full justify-start text-left font-normal",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
+                                {field.value ? format(field.value, "dd/MM/yyyy") : "Selecionar"}
                               </Button>
                             </PopoverTrigger>
-
-                            <PopoverContent className="w-auto p-0">
+                            <PopoverContent className="w-auto p-0 bg-background border rounded shadow-md z-50">
                               <Calendar
-                                className="bg-white shadow rounded"
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
@@ -156,33 +200,27 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
                   />
 
                   <FormField
-                    name={"nextDateMaintenance"}
+                    name="nextDateMaintenance"
                     control={formAddMaintenance.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Proxima manutenção</FormLabel>
+                        <FormLabel>Próxima manutenção</FormLabel>
                         <FormControl>
                           <Popover>
                             <PopoverTrigger asChild>
                               <Button
-                                variant={"outline"}
+                                variant="outline"
                                 className={cn(
                                   "w-full justify-start text-left font-normal",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
+                                {field.value ? format(field.value, "dd/MM/yyyy") : "Selecionar"}
                               </Button>
                             </PopoverTrigger>
-
-                            <PopoverContent className="w-auto p-0">
+                            <PopoverContent className="w-auto p-0 bg-background border rounded shadow-md z-50">
                               <Calendar
-                                className="bg-white shadow rounded"
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
@@ -190,6 +228,34 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
                               />
                             </PopoverContent>
                           </Popover>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    name="provider"
+                    control={formAddMaintenance.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Fornecedor / Oficina (opcional)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: Auto Mecânica Silva" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    name="notes"
+                    control={formAddMaintenance.control}
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Observações (opcional)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Detalhes adicionais..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -200,28 +266,17 @@ export function AddNewMaintenance({ idCar }: AddNewMaintenanceProps) {
             </Form>
           </div>
 
-          <DrawerFooter className="px-0">
+          <DrawerFooter>
             {formAddMaintenance.formState.isSubmitting ? (
-              <Button
-                form="formAddMaintenance"
-                type="submit"
-                variant="default"
-                className="flex gap-2 mt-4"
-                disabled
-              >
+              <Button type="submit" disabled className="flex gap-2">
                 <LoaderCircle className="animate-spin" />
                 Salvando...
               </Button>
             ) : (
-              <Button
-                form="formAddCar"
-                type="submit"
-                className="w-full cursor-pointer"
-              >
-                Salvar
+              <Button form="formAddCar" type="submit" className="w-full">
+                Salvar manutenção
               </Button>
             )}
-
             <DrawerClose asChild>
               <Button variant="outline">Cancelar</Button>
             </DrawerClose>

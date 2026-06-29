@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Home, Library } from "lucide-react";
 import Link from "next/link";
 import { MenuUserLogin } from "./menu-user-login";
+import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
 
 const mockMenu = [
@@ -24,7 +25,7 @@ const mockMenu = [
 export default async function SidebarDashboard() {
   return (
     <>
-      <nav className="border-r border-gray-200 flex flex-col justify-between">
+      <nav className="w-full border-r border-border flex flex-col justify-between h-full min-h-screen">
         <div>
           <div className="border-b border-gray-200 px-4 py-4">
             <Link className="flex items-center gap-2" href={"/dashboard"}>
@@ -61,8 +62,11 @@ export default async function SidebarDashboard() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-border p-4">
           <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-end pb-1">
+              <ThemeToggle />
+            </div>
             <MenuUserLogin />
           </div>
         </div>

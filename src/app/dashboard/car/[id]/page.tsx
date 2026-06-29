@@ -13,7 +13,6 @@ import {
 import { format, formatDistance } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import changeMaintenanceForTime from "@/actions/services/changes-status-automatically";
 import DropMenuMaintenance from "./_components/dropmenu-maintenance";
 import { Badge } from "@/components/ui/badge";
 
@@ -24,7 +23,6 @@ type viewCarPageParams = {
 };
 
 export default async function ViewCarPage({ params }: viewCarPageParams) {
-  await changeMaintenanceForTime(); // Atualiza os status das tabelas
   const carData = await getACar(params.id);
   const dataCarMaintenanceId = await getCarMaintenance(params.id);
   if (!carData) {

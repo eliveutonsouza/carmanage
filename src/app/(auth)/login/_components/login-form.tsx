@@ -91,11 +91,20 @@ export default function LoginForm() {
           </Button>
         )}
 
-        <CardFooter>
+        <CardFooter className="flex flex-col gap-1">
           <Link
             className={cn(
               buttonVariants({ variant: "link", size: "sm" }),
-              "mt-2 mx-auto cursor-pointer"
+              "cursor-pointer"
+            )}
+            href="/forgot-password"
+          >
+            Esqueceu a senha?
+          </Link>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "link", size: "sm" }),
+              "cursor-pointer"
             )}
             href="/register"
           >

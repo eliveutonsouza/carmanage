@@ -5,6 +5,7 @@ import { Features } from "./_components/features";
 import Footer from "./_components/footer";
 import { Header } from "./_components/header";
 import { Hero } from "./_components/hero";
+import { Pricing } from "./_components/pricing";
 import { Team } from "./_components/team";
 
 export default function LandingPage() {
@@ -14,6 +15,7 @@ export default function LandingPage() {
       <Hero />
       <Features />
       <About />
+      <Pricing />
       <Faq />
       <Team />
       <Contact />
