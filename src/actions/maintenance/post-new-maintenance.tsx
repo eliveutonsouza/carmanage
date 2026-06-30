@@ -8,27 +8,33 @@ export default async function postNewMaintenance(
   idCar: string
 ) {
   try {
-    const { nameMaintenance, lastDateMaintenance, nextDateMaintenance } =
-      dataMaintenance;
-    const user = await getLoggedInUser();
+    const {
+      nameMaintenance,
+      type,
+      lastDateMaintenance,
+      nextDateMaintenance,
+      cost,
+      provider,
+      notes,
+    } = dataMaintenance;
 
+    const user = await getLoggedInUser();
     if (!user) {
       throw new Error("User not found");
     }
 
-    console.log("Criando manutenção para o carro:", idCar);
-
     await db.carMaintenance.create({
       data: {
-        car: {
-          connect: { id: idCar },
-        },
+        car: { connect: { id: idCar } },
         name: nameMaintenance,
+        type: type ?? "PREVENTIVA",
         lastMaintenance: new Date(lastDateMaintenance),
         nextMaintenance: new Date(nextDateMaintenance),
+        cost: cost ? parseFloat(cost) : null,
+        provider: provider || null,
+        notes: notes || null,
       },
     });
-    console.log("Manutenção criada com sucesso!");
   } catch (error) {
     console.error("Erro ao criar nova manutenção:", error);
     throw error;

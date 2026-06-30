@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Settings, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 type User = {
   email: string;
@@ -70,9 +71,11 @@ export function MenuUserLogin() {
       <DropdownMenuContent className={cn("w-60")}>
         <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className={cn("gap-2 cursor-pointer")}>
-          <Settings size={16} />
-          Configurações
+        <DropdownMenuItem className={cn("gap-2 cursor-pointer")} asChild>
+          <Link href="/dashboard/settings">
+            <Settings size={16} />
+            Configurações
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem

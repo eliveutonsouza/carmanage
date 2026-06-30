@@ -4,6 +4,9 @@ import db from "./lib/db";
 import { comparePassword } from "./lib/utils";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  pages: {
+    signIn: "/login",
+  },
   providers: [
     Credentials({
       credentials: {

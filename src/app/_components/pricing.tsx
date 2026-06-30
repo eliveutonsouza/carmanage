@@ -1,362 +1,137 @@
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
+import Link from "next/link";
+
+const plans = [
+  {
+    name: "Básico",
+    price: "Grátis",
+    description: "Ideal para uso pessoal e acompanhamento de veículos próprios.",
+    features: [
+      "Até 2 veículos",
+      "Manutenções ilimitadas por veículo",
+      "Relatórios por e-mail",
+      "Atualização automática de status",
+    ],
+    cta: "Começar Grátis",
+    href: "/register",
+    highlighted: false,
+  },
+  {
+    name: "Pro",
+    price: "R$ 29",
+    period: "/mês",
+    description: "Para quem gerencia uma pequena frota ou quer recursos avançados.",
+    features: [
+      "Até 15 veículos",
+      "Alertas antecipados de vencimento",
+      "Rastreamento de custos de manutenção",
+      "Exportação em PDF e Excel",
+      "Suporte prioritário",
+    ],
+    cta: "Assinar Pro",
+    href: "/register",
+    highlighted: true,
+  },
+  {
+    name: "Empresa",
+    price: "R$ 79",
+    period: "/mês",
+    description: "Para frotas corporativas com múltiplos usuários e veículos.",
+    features: [
+      "Veículos ilimitados",
+      "Múltiplos usuários por conta",
+      "Controle de acesso por perfil",
+      "API para integração com ERPs",
+      "Relatórios personalizados",
+      "Suporte dedicado",
+    ],
+    cta: "Falar com Vendas",
+    href: "/register",
+    highlighted: false,
+  },
+];
 
 export function Pricing() {
   return (
     <section
       id="pricing"
-      className="
-  bg-white
-  pt-20
-  lg:pt-[120px]
-  pb-12
-  lg:pb-[90px]
-  relative
-  z-20
-  overflow-hidden
-"
+      className="bg-background pt-20 lg:pt-[120px] pb-12 lg:pb-[90px]"
     >
-      <div className="container">
-        <div className="flex flex-wrap -mx-4">
-          <div className="w-full px-4">
-            <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[620px]">
-              <span className="font-semibold text-lg text-primary mb-2 block">
-                Tabela de Preços
-              </span>
-              <h2
-                className="
-            font-bold
-            text-3xl
-            sm:text-4xl
-            md:text-[40px]
-            text-dark
-            mb-4
-          "
-              >
-                Nossos Planos de Manutenção
-              </h2>
-              <p
-                className="
-            text-lg
-            sm:text-xl
-            leading-relaxed
-            sm:leading-relaxed
-            text-body-color
-          "
-              >
-                There are many variations of passages of Lorem Ipsum available
-                but the majority have suffered alteration in some form.
-              </p>
-            </div>
-          </div>
+      <div className="container mx-auto px-4">
+        <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[620px]">
+          <span className="font-semibold text-lg text-primary mb-2 block">
+            Planos e Preços
+          </span>
+          <h2 className="font-bold text-3xl sm:text-4xl md:text-[40px] text-foreground mb-4">
+            Escolha o plano ideal para você
+          </h2>
+          <p className="text-lg sm:text-xl leading-relaxed text-muted-foreground">
+            Comece gratuitamente e escale conforme sua necessidade. Sem
+            surpresas, sem contratos longos.
+          </p>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center">
-          <div className="w-full md:w-1/2 lg:w-1/3">
+        <div className="flex flex-wrap items-stretch justify-center gap-6">
+          {plans.map((plan) => (
             <div
-              className="
-          bg-white
-          rounded-xl
-          relative
-          z-10
-          overflow-hidden
-          border border-primary border-opacity-20
-          shadow-pricing
-          py-10
-          px-8
-          sm:p-12
-          lg:py-10 lg:px-6
-          xl:p-12
-          mb-10
-          text-center
-          wow
-          fadeInUp
-        "
-              data-wow-delay=".15s
-        "
+              key={plan.name}
+              className={`w-full md:w-[calc(33%-1rem)] max-w-sm rounded-xl border p-8 flex flex-col ${
+                plan.highlighted
+                  ? "bg-primary text-primary-foreground border-primary shadow-xl scale-105"
+                  : "bg-card text-card-foreground border-border"
+              }`}
             >
-              <span className="text-dark font-medium text-base uppercase block mb-2">
-                STARTING FROM
-              </span>
-              <h2 className="font-semibold text-primary mb-9 text-[28px]">
-                $ 19.99/mo
-              </h2>
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
+                <p
+                  className={`text-sm mb-4 ${
+                    plan.highlighted
+                      ? "text-primary-foreground/80"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {plan.description}
+                </p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  {plan.period && (
+                    <span
+                      className={
+                        plan.highlighted
+                          ? "text-primary-foreground/70"
+                          : "text-muted-foreground"
+                      }
+                    >
+                      {plan.period}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-              <div className="mb-10">
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  1 User
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  All UI components
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Lifetime access
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Free updates
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Use on 1 (one) project
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  3 Months support
-                </p>
-              </div>
-              <div className="w-full">
-                <Button>Purchase Now</Button>
-              </div>
-              <span
-                className="
-            absolute
-            left-0
-            bottom-0
-            z-[-1]
-            w-14
-            h-14
-            rounded-tr-full
-            block
-            bg-primary
-          "
-              ></span>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <div
-              className="
-          bg-primary bg-gradient-to-b
-          from-primary
-          to-black
-          rounded-xl
-          relative
-          z-10
-          overflow-hidden
-          shadow-pricing
-          py-10
-          px-8
-          sm:p-12
-          lg:py-10 lg:px-6
-          xl:p-12
-          mb-10
-          text-center
-          wow
-          fadeInUp
-        "
-              data-wow-delay=".1s
-        "
-            >
-              <span
-                className="
-            inline-block
-            py-2
-            px-6
-            border border-white
-            rounded-full
-            text-base
-            font-semibold
-            text-primary
-            bg-white
-            uppercase
-            mb-5
-          "
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm">
+                    <Check
+                      size={16}
+                      className={
+                        plan.highlighted ? "text-primary-foreground" : "text-primary"
+                      }
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <Button
+                asChild
+                variant={plan.highlighted ? "secondary" : "default"}
+                className="w-full"
               >
-                POPULAR
-              </span>
-              <span className="text-white font-medium text-base uppercase block mb-2">
-                STARTING FROM
-              </span>
-              <h2 className="font-semibold text-white mb-9 text-[28px]">
-                $ 19.99/mo
-              </h2>
-
-              <div className="mb-10">
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  5 User
-                </p>
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  All UI components
-                </p>
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  Lifetime access
-                </p>
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  Free updates
-                </p>
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  Use on 1 (one) project
-                </p>
-                <p className="text-base font-medium text-white leading-loose mb-1">
-                  4 Months support
-                </p>
-              </div>
-              <div className="w-full">
-                <Button>Purchase Now</Button>
-              </div>
+                <Link href={plan.href}>{plan.cta}</Link>
+              </Button>
             </div>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <div
-              className="
-          bg-white
-          rounded-xl
-          relative
-          z-10
-          overflow-hidden
-          border border-primary border-opacity-20
-          shadow-pricing
-          py-10
-          px-8
-          sm:p-12
-          lg:py-10 lg:px-6
-          xl:p-12
-          mb-10
-          text-center
-          wow
-          fadeInUp
-        "
-              data-wow-delay=".15s
-        "
-            >
-              <span className="text-dark font-medium text-base uppercase block mb-2">
-                STARTING FROM
-              </span>
-              <h2 className="font-semibold text-primary mb-9 text-[28px]">
-                $ 70.99/mo
-              </h2>
-
-              <div className="mb-10">
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  1 User
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  All UI components
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Lifetime access
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Free updates
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  Use on unlimited project
-                </p>
-                <p
-                  className="
-              text-base
-              font-medium
-              text-body-color
-              leading-loose
-              mb-1
-            "
-                >
-                  4 Months support
-                </p>
-              </div>
-              <div className="w-full">
-                <Button>Purchase Now</Button>
-              </div>
-
-              <span
-                className="
-            absolute
-            right-0
-            top-0
-            z-[-1]
-            w-14
-            h-14
-            rounded-bl-full
-            block
-            bg-secondary
-          "
-              ></span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

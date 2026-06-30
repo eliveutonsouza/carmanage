@@ -3,9 +3,10 @@ import { inngest } from "../../../inngest/client";
 import {
   changeStatusMaintenanceEveryday,
   sendEmailReport,
+  sendMaintenanceAlerts,
 } from "@/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [sendEmailReport, changeStatusMaintenanceEveryday],
+  functions: [sendEmailReport, changeStatusMaintenanceEveryday, sendMaintenanceAlerts],
 });

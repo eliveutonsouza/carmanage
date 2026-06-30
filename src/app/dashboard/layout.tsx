@@ -13,10 +13,12 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[270px_1fr] min-h-screen">
-      <SidebarDashboard />
+    <div className="flex min-h-screen">
+      <div className="hidden md:flex md:w-[270px] md:flex-shrink-0">
+        <SidebarDashboard />
+      </div>
 
-      {children}
+      <div className="flex-1 min-w-0">{children}</div>
     </div>
   );
 }
