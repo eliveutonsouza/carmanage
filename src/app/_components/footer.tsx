@@ -3,10 +3,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer
-      className="bg-black pt-20 lg:pt-[120px] relative z-10 wow fadeInUp"
-      data-wow-delay=".15s"
-    >
+    <footer className="bg-black pt-20 lg:pt-[120px] relative z-10">
       <div className="container">
         <div className="flex justify-between  flex-wrap -mx-4">
           <div className="px-4">
@@ -99,6 +96,14 @@ export default function Footer() {
                     className="inline-block text-base text-gray-300 hover:text-primary leading-loose mb-2"
                   >
                     Sobre
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#pricing"
+                    className="inline-block text-base text-gray-300 hover:text-primary leading-loose mb-2"
+                  >
+                    Preços
                   </Link>
                 </li>
               </ul>

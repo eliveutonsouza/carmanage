@@ -39,8 +39,7 @@ export function Team() {
             {teams.map((team) => (
               <div
                 key={team.id}
-                className="mb-10 wow fadeInUp"
-                data-wow-delay=".1s"
+                className="mb-10"
               >
                 <div className="relative w-[170px] h-[170px] rounded-full z-10 mx-auto mb-6">
                   <Image

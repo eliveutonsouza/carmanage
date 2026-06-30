@@ -85,10 +85,6 @@ export function Contact() {
               2xl:p-[60px]
               sm:py-12 sm:px-10
               lg:py-12 lg:px-10
-              wow
-              fadeInUp
-            "
-              data-wow-delay=".2s
             "
             >
               <h3 className="font-semibold mb-8 text-2xl md:text-[26px]">

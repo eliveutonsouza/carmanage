@@ -1,9 +1,6 @@
-import {
-  AreaChart,
-  ArrowRight,
-  FileSpreadsheet,
-  MonitorCheck,
-} from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { AreaChart, Bell, FileSpreadsheet, MonitorCheck } from "lucide-react";
 import Link from "next/link";
 
 const features = [
@@ -11,75 +8,83 @@ const features = [
     id: 1,
     title: "Fácil de Usar",
     description:
-      "A plataforma é totalmente acessível e permite a gestão de manutenções de forma simples e intuitiva.",
-    icon: <AreaChart size={30} className="text-yellow-50" />,
-    href: "/login",
+      "Interface intuitiva para cadastrar veículos e registrar manutenções em poucos cliques, sem curva de aprendizado.",
+    icon: AreaChart,
   },
   {
     id: 2,
-    title: "Gere Relatórios",
+    title: "Relatórios Completos",
     description:
-      "A plataforma permite a geração de relatórios completos sobre manutenções.",
-    icon: <FileSpreadsheet size={30} className="text-yellow-50" />,
-    href: "/login",
+      "Gere e receba relatórios XLSX detalhados por e-mail com o histórico de todas as manutenções.",
+    icon: FileSpreadsheet,
   },
   {
     id: 3,
-    title: "Todos os Elementos Essenciais",
+    title: "Status em Tempo Real",
     description:
-      "A plataforma inclui todas as ferramentas necessárias para uma gestão eficaz de manutenções.",
-    icon: <MonitorCheck size={30} className="text-yellow-50" />,
-    href: "/login",
+      "Saiba instantaneamente quais manutenções estão conformes e quais estão vencidas, sem precisar verificar manualmente.",
+    icon: MonitorCheck,
+  },
+  {
+    id: 4,
+    title: "Alertas Antecipados",
+    description:
+      "Receba e-mails de aviso antes do vencimento das manutenções, configurando quantos dias de antecedência preferir.",
+    icon: Bell,
   },
 ];
 
 export function Features() {
   return (
-    <section id="features" className="pt-20 lg:pt-[120px] pb-8 lg:pb-[70px]">
+    <section id="features" className="bg-white py-20 lg:py-28">
       <div className="container">
-        <div className="flex flex-wrap -mx-4">
-          <div className="w-full px-4">
-            <div className="mb-12 lg:mb-20 max-w-[620px]">
-              <span className="font-semibold text-lg text-primary mb-2 block">
-                Recursos
-              </span>
-              <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl text-dark mb-4">
-                Principais Recursos da Plataforma
-              </h2>
-              <p className="text-lg sm:text-xl leading-relaxed sm:leading-relaxed text-body-color">
-                Nossa plataforma oferece uma gestão completa e intuitiva para
-                manutenções de veículos.
-              </p>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="mb-16 max-w-2xl">
+          <span className="mb-3 inline-block text-sm font-semibold uppercase tracking-wider text-amber-500">
+            Recursos
+          </span>
+          <h2 className="mb-4 text-3xl font-bold text-slate-900 sm:text-4xl md:text-5xl">
+            Tudo que você precisa para cuidar dos seus veículos
+          </h2>
+          <p className="text-lg text-slate-500 leading-relaxed">
+            Uma plataforma completa com as ferramentas certas para nunca mais perder uma manutenção.
+          </p>
         </div>
-        <div className="flex justify-between flex-wrap -mx-4">
-          {features.map((feature) => (
-            <div key={feature.id} className="w-full md:w-1/2 lg:w-1/4 px-4">
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
               <div
-                className="bg-white mb-12 group wow fadeInUp"
-                data-wow-delay=".1s"
+                key={feature.id}
+                className="group rounded-2xl border border-slate-100 bg-white p-8 transition-all duration-200 hover:border-amber-200 hover:shadow-lg hover:shadow-amber-50"
               >
-                <div className="w-[70px] h-[70px] flex items-center justify-center bg-primary rounded-2xl mb-8 relative z-10">
-                  <span className="w-[70px] h-[70px] flex items-center justify-center bg-primary bg-opacity-20 rounded-2xl mb-8 absolute z-[-1] top-0 left-0 rotate-[25deg] group-hover:rotate-45 duration-300"></span>
-                  {feature.icon}
+                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 group-hover:from-amber-100 group-hover:to-orange-100 transition-colors">
+                  <Icon className="h-6 w-6 text-amber-500" />
                 </div>
-                <h4 className="font-bold text-xl text-dark mb-3">
+                <h4 className="mb-3 text-lg font-semibold text-slate-900">
                   {feature.title}
                 </h4>
-                <p className="text-body-color mb-8 lg:mb-11">
+                <p className="text-sm leading-relaxed text-slate-500">
                   {feature.description}
                 </p>
-                <Link
-                  href={feature.href}
-                  className="flex items-center gap-2 font-medium text-base text-body-color hover:text-primary"
-                >
-                  Comece Agora
-                  <ArrowRight size={16} />
-                </Link>
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/register"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20"
+            )}
+          >
+            Começar Grátis
+          </Link>
         </div>
       </div>
     </section>
